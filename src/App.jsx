@@ -1,4 +1,5 @@
 import DataImage from "./data";
+import Spline from "@splinetool/react-spline";
 import { listTools, listProyek } from "./data";
 function App() {
   return (
@@ -12,17 +13,31 @@ function App() {
               className="w-10 rounded-md"
               loading="lazy"
             />
-            <q>Kode yang indah, lahir dari ketekunan.😁</q>
+            <q>
+              Keberhasilan diraih oleh mereka yang tetap bertahan dan tidak
+              mudah menyerah😁
+            </q>
           </div>
           <h1 className="text-5xl/tight font-bold mb-6">
-            Hi, Saya Muhammad Sholihun
+            Hi, Saya M. Sholihun
           </h1>
+
           <p className="text-base/loose mb-6 opacity-50">
-            Saya mempunyai keterarikan dalam bidang Mobile Developer dan Website
+            Saya adalah mahasiswa semester 8 Program Studi D4 Rekayasa Perangkat
+            Lunak di Politeknik Negeri Bengkalis, dengan minat pada pengembangan
+            aplikasi mobile dan website. Melalui pengalaman organisasi,
+            kompetisi, pelatihan, dan Coding Camp X DBS Foundation 2025, saya
+            telah mengasah keterampilan teknis dan soft skill. Saya termotivasi
+            untuk mengikuti Program Magang Berdampak sebagai langkah memperluas
+            wawasan dan memahami dunia kerja industri teknologi secara langsung.
+            Dengan semangat dan dedikasi, saya siap memberikan kontribusi nyata
+            di bidang pengembangan perangkat lunak.
           </p>
           <div className="flex items-center sm:gap-4 gap-2">
             <a
               href="https://bit.ly/CVSholihun"
+              target="_blank"
+              rel="noopener noreferrer"
               className="bg-violet-700 p-4 rounded-2xl hover:bg-violet-600"
             >
               Download CV <i className="ri-download-line ri-lg"></i>
@@ -58,16 +73,8 @@ function App() {
             className="w-12 rounded-md mb-10 sm:hidden"
             loading="lazy"
           />
-          <p className="text-base/loose mb-10">
-            Mahasiswa semester 8 Jurusan Teknik Informatika di Politeknik Negeri
-            Bengkalis dengan minat besar dalam pengembangan aplikasi mobile dan
-            website. Berpengalaman dalam organisasi, kepanitiaan, dan kompetisi
-            di bidang teknologi dan olahraga, bahkan berhasil menjuarai berbagai
-            kompetisi dari tingkat politeknik hingga umum. Tersertifikasi di
-            bidang Front-End & Back-End Developer serta Pemrograman dengan
-            Kotlin dari Dicoding untuk memperkuat kompetensi dalam pengembangan
-            aplikasi mobile.
-          </p>
+          <Spline scene="https://prod.spline.design/nH86s2KjdpqFL2-v/scene.splinecode" />
+
           <div className="flex items-center justify-between">
             <img
               src={DataImage.HeroImage}
