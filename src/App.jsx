@@ -1,5 +1,4 @@
 import DataImage from "./data";
-import Spline from "@splinetool/react-spline";
 import { listTools, listProyek } from "./data";
 function App() {
   return (
@@ -73,7 +72,6 @@ function App() {
             className="w-12 rounded-md mb-10 sm:hidden"
             loading="lazy"
           />
-          <Spline scene="https://prod.spline.design/nH86s2KjdpqFL2-v/scene.splinecode" />
 
           <div className="flex items-center justify-between">
             <img
