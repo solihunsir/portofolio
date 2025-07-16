@@ -1,5 +1,6 @@
 import DataImage from "./data";
 import { listTools, listProyek } from "./data";
+import { listAgenda } from "./data";
 function App() {
   return (
     <>
@@ -52,7 +53,7 @@ function App() {
         <img
           src={DataImage.HeroImage}
           alt="Hero Image"
-          className="w-[500px] md:ml-auto
+          className="w-[400px] md:ml-auto rounded-t-3xl
           animate__animated animate__fadeInUp animate__delay-4s"
           loading="lazy"
         />
@@ -184,7 +185,9 @@ function App() {
                 </div>
                 <div className="mt-8 text-center">
                   <a
-                    href=""
+                    href={proyek.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="bg-violet-700 p-3 rounded-lg block border border-zinc-600 hover:bg-violet-600"
                   >
                     Lihat Website
@@ -196,6 +199,45 @@ function App() {
         </div>
       </div>
       {/*akhir proyek*/}
+
+      {/* agenda*/}
+      <div className="proyek mt-32 py-10" id="agenda">
+        <h1
+          className="text-center text-4xl font-bold mb-2"
+          data-aos="fade-up"
+          data-aos-duration="1000"
+          data-aos-once="true"
+        >
+          Agenda
+        </h1>
+        <p
+          className="text-base/loose text-center opacity-50"
+          data-aos="fade-up"
+          data-aos-duration="1000"
+          data-aos-delay="300"
+        >
+          Berikut ini beberapa Agenda dan Pencapaian selama masa perkuliahan
+        </p>
+        <div className="proyek-box mt-14 grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4">
+          {listAgenda.map((agenda) => (
+            <div
+              key={agenda.id}
+              className="p-4 bg-zinc-800 rounded-md"
+              data-aos="fade-up"
+              data-aos-duration="1000"
+              data-aos-once="true"
+              data-aos-delay={agenda.dad}
+            >
+              <img src={agenda.gambar} alt="Agenda Image" loading="lazy" />
+              <div>
+                <h1 className="text-2xl font-bold my-4">{agenda.nama}</h1>
+                <h1 className="text-base/loose mb-4">{agenda.desk}</h1>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      {/*akhir Agenda*/}
 
       {/*kontak*/}
       <div className="kontak mt-32 sm:p-10 p-0" id="kontak">

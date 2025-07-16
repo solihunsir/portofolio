@@ -119,6 +119,7 @@ export const listProyek = [
     desk: "Aplikasi yang berfungsi mencari Hotel dan Wisma terdekat dari posisi pengguna",
     tools: ["Dart", "Google Maps", "Google Street View"],
     dad: "200",
+    link: "https://github.com/solihunsir/pencarian-hotel-bengkalis-dengan-Astar",
   },
   {
     id: 2,
@@ -127,6 +128,7 @@ export const listProyek = [
     desk: "Website untuk mencegah dan memberantas Komentar Judi Online di Platform Youtube ",
     tools: ["ReactJS", "Express"],
     dad: "300",
+    link: "https://github.com/solihunsir/Judi-Guard",
   },
   {
     id: 3,
@@ -135,6 +137,7 @@ export const listProyek = [
     desk: "Website Portal Berita yang memberikan berita yang terbaru dan relevan ",
     tools: ["Laravel", "TailwindCSS"],
     dad: "400",
+    link: "https://github.com/solihunsir/portal_berita",
   },
   {
     id: 4,
@@ -143,5 +146,73 @@ export const listProyek = [
     desk: "Website berfungsi untuk memberikan Informasi kegiatan dan agenda selama perkuliahan",
     tools: ["Html", "CSS", "Bootstrap"],
     dad: "500",
+    link: "https://github.com/solihunsir/webkelas_rpl21c",
+  },
+];
+
+import Agenda1 from "/assets/agenda/agenda1.png";
+import Agenda2 from "/assets/agenda/agenda2.png";
+import Agenda3 from "/assets/agenda/agenda3.png";
+import Agenda4 from "/assets/agenda/agenda4.png";
+import Agenda5 from "/assets/agenda/agenda5.png";
+import Agenda6 from "/assets/agenda/agenda6.png";
+import Agenda7 from "/assets/agenda/agenda7.png";
+import Agenda8 from "/assets/agenda/agenda8.png";
+export const listAgenda = [
+  {
+    id: 1,
+    gambar: Agenda1,
+    nama: "Juara 1 Catur PKM & Porseni",
+    desk: "Pertandingan Catur yang diikuti oleh seluruh Mahasiswa aktif Politeknik Negeri Bengkalis",
+    dad: "200",
+  },
+  {
+    id: 2,
+    gambar: Agenda2,
+    nama: "Juara 2 Pemrograman Web",
+    desk: "Pertandingan yang diikuti oleh seluruh Mahasiswa & Siswa Se-Kabupaten Bengkalis",
+    dad: "200",
+  },
+  {
+    id: 3,
+    gambar: Agenda3,
+    nama: "Juara 1 Desain Web",
+    desk: "Pertandingan Desain Web diikuti oleh Mahasiswa Aktif Jurusan Teknik Informatika",
+    dad: "200",
+  },
+  {
+    id: 4,
+    gambar: Agenda4,
+    nama: "Juara Mahasiswa Terbaik Catur",
+    desk: "Pertandingan Catur Umum yang dikuti Oleh Mahasiswa Aktif Se-Kabupaten Bengkalis",
+    dad: "200",
+  },
+  {
+    id: 5,
+    gambar: Agenda5,
+    nama: "Juara Video Editing",
+    desk: "Pertandingan Video Editing yang diikuti oleh seluruh Mahasiswa Politeknik Negeri Bengkalis",
+    dad: "200",
+  },
+  {
+    id: 6,
+    gambar: Agenda6,
+    nama: "Sertifikat Front-End & Back-End Developer",
+    desk: "Program Coding Camp Powered By DBS Foundation",
+    dad: "200",
+  },
+  {
+    id: 7,
+    gambar: Agenda7,
+    nama: "Sertifikat Pertukaran Mahasiswa Merdeka",
+    desk: "Program Pertukaran Mahasiswa Merdeka Batch 3 di Politeknik Negeri Pontianak",
+    dad: "200",
+  },
+  {
+    id: 8,
+    gambar: Agenda8,
+    nama: "Sertifikat Pertukaran Mahasiswa Merdeka",
+    desk: "Program Pertukaran Mahasiswa Merdeka Batch 3 di Politeknik Negeri Pontianak",
+    dad: "200",
   },
 ];
