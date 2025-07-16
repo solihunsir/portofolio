@@ -211,8 +211,8 @@ export const listAgenda = [
   {
     id: 8,
     gambar: Agenda8,
-    nama: "Sertifikat Pertukaran Mahasiswa Merdeka",
-    desk: "Program Pertukaran Mahasiswa Merdeka Batch 3 di Politeknik Negeri Pontianak",
+    nama: "Sertifikat Web Intermediate",
+    desk: "Sertifikat yang didapatkan dari Dicoding dengan kelas Web Intermediate",
     dad: "200",
   },
 ];
