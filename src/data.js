@@ -110,6 +110,7 @@ import Proyek1 from "/assets/proyek/proyek1.png";
 import Proyek2 from "/assets/proyek/proyek2.png";
 import Proyek3 from "/assets/proyek/proyek3.png";
 import Proyek4 from "/assets/proyek/proyek4.png";
+import Proyek5 from "/assets/proyek/proyek5.png";
 
 export const listProyek = [
   {
@@ -145,6 +146,15 @@ export const listProyek = [
     nama: "Agenda Kelas",
     desk: "Website berfungsi untuk memberikan Informasi kegiatan dan agenda selama perkuliahan",
     tools: ["Html", "CSS", "Bootstrap"],
+    dad: "500",
+    link: "https://github.com/solihunsir/webkelas_rpl21c",
+  },
+  {
+    id: 5,
+    gambar: Proyek5,
+    nama: "Smart Village Ecosystem",
+    desk: "Web App yang memberikan dampak ke masyarakat dalam memberikan informasi detail, komunitas dan pelaporan masalah di desa",
+    tools: ["Flutter", "Laravel", "TailwindCSS"],
     dad: "500",
     link: "https://github.com/solihunsir/webkelas_rpl21c",
   },

@@ -23,15 +23,7 @@ function App() {
           </h1>
 
           <p className="text-base/loose mb-6 opacity-50">
-            Saya adalah mahasiswa semester 8 Program Studi D4 Rekayasa Perangkat
-            Lunak di Politeknik Negeri Bengkalis, dengan minat pada pengembangan
-            aplikasi mobile dan website. Melalui pengalaman organisasi,
-            kompetisi, pelatihan, dan Coding Camp X DBS Foundation 2025, saya
-            telah mengasah keterampilan teknis dan soft skill. Saya termotivasi
-            untuk mengikuti Program Magang Berdampak sebagai langkah memperluas
-            wawasan dan memahami dunia kerja industri teknologi secara langsung.
-            Dengan semangat dan dedikasi, saya siap memberikan kontribusi nyata
-            di bidang pengembangan perangkat lunak.
+            Mahasiswa D4 Rekayasa Perangkat Lunak dengan fokus utama pada pengembangan aplikasi mobile dan website. Memiliki pengalaman luas dalam organisasi dan kompetisi, serta berhasil meraih berbagai penghargaan hingga tingkat umum. Tersertifikasi Full-Stack Developer melalui program Coding Camp x DBS Foundation, serta memiliki kompetensi mendalam dalam pengembangan Front-End dan Back-End. Dengan kombinasi keahlian teknis yang kuat dan pengalaman kepemimpinan, saya siap berkontribusi dalam membangun solusi perangkat lunak yang inovatif dan terukur.
           </p>
           <div className="flex items-center sm:gap-4 gap-2">
             <a
