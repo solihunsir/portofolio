@@ -23,7 +23,11 @@ function App() {
           </h1>
 
           <p className="text-base/loose mb-6 opacity-50">
-            Mahasiswa D4 Rekayasa Perangkat Lunak dengan fokus utama pada pengembangan aplikasi mobile dan website. Memiliki pengalaman luas dalam organisasi dan kompetisi, serta berhasil meraih berbagai penghargaan hingga tingkat umum. Tersertifikasi Full-Stack Developer melalui program Coding Camp x DBS Foundation, serta memiliki kompetensi mendalam dalam pengembangan Front-End dan Back-End. Dengan kombinasi keahlian teknis yang kuat dan pengalaman kepemimpinan, saya siap berkontribusi dalam membangun solusi perangkat lunak yang inovatif dan terukur.
+            Fresh Graduate Jurusan Teknik Informatika di Politeknik Negeri Bengkalis dengan minat besar dalam pengembangan
+            aplikasi mobile dan web app. Berpengalaman dalam organisasi, kepanitiaan, dan kompetisi di bidang teknologi dan olahraga,
+            bahkan berhasil menjuarai berbagai kompetisi dari tingkat politeknik hingga umum. Tersertifikasi di bidang Front-End & Back
+            End Developer serta Pemrograman dengan Kotlin dari Dicoding untuk memperkuat kompetensi dalam pengembangan
+            aplikasi mobile.
           </p>
           <div className="flex items-center sm:gap-4 gap-2">
             <a
