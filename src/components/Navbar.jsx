@@ -57,7 +57,7 @@ const Navbar = () => {
             ))}
             <li className="ml-3">
               <a
-                href="https://bit.ly/CVSholihun"
+                href="https://bit.ly/4fsgT26"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn-primary text-sm py-2 px-4"
@@ -97,7 +97,7 @@ const Navbar = () => {
             ))}
             <li className="pt-1">
               <a
-                href="https://bit.ly/CVSholihun"
+                href="https://bit.ly/4fsgT26"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn-primary w-full justify-center text-sm py-2.5"
