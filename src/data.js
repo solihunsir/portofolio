@@ -1,10 +1,8 @@
 import HeroImage from "/assets/conixx.jpg";
 
-const Image = {
+export const DataImage = {
   HeroImage,
 };
-
-export default Image;
 
 import Tools1 from "/assets/tools/vscode.png";
 import Tools2 from "/assets/tools/reactjs.png";
@@ -168,6 +166,7 @@ import Agenda5 from "/assets/agenda/agenda5.png";
 import Agenda6 from "/assets/agenda/agenda6.png";
 import Agenda7 from "/assets/agenda/agenda7.png";
 import Agenda8 from "/assets/agenda/agenda8.png";
+
 export const listAgenda = [
   {
     id: 1,

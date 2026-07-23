@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import DataImage from "../data";
+import { DataImage } from "../data";
 
 const Hero = () => {
   const [hasScrolled, setHasScrolled] = useState(false);
