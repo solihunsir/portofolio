@@ -110,6 +110,7 @@ import Proyek1 from "/assets/proyek/proyek1.png";
 import Proyek2 from "/assets/proyek/proyek2.png";
 import Proyek3 from "/assets/proyek/proyek3.png";
 import Proyek4 from "/assets/proyek/proyek4.png";
+import Proyek5 from "/assets/proyek/proyek5.png";
 
 export const listProyek = [
   {
@@ -147,6 +148,15 @@ export const listProyek = [
     tools: ["Html", "CSS", "Bootstrap"],
     dad: "500",
     link: "https://github.com/solihunsir/webkelas_rpl21c",
+  },
+  {
+    id: 5,
+    gambar: Proyek5,
+    nama: "Private Chess AI",
+    desk: "Platform latihan catur interaktif berbasis web dengan analisis taktis real-time secara 100% offline, mengintegrasikan mesin Stockfish 16 (WASM) untuk memberikan evaluasi langkah, riwayat analisis terstruktur",
+    tools: ["Next.js", "React.js", "TailwindCSS", "WASM", "Stockfish"],
+    dad: "500",
+    link: "https://github.com/solihunsir/private-chess-ai",
   },
 ];
 
