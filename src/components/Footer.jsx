@@ -1,113 +1,116 @@
-const Footer = () => {
-  const currentYear = new Date().getFullYear();
+export default function Footer() {
+  const year = new Date().getFullYear();
 
-  const socialLinks = [
-    { href: "https://github.com/solihunsir", icon: "ri-github-fill", label: "GitHub" },
-    { href: "https://www.instagram.com/solihunsir", icon: "ri-instagram-fill", label: "Instagram" },
-    { href: "https://www.linkedin.com/in/m-sholihun", icon: "ri-linkedin-fill", label: "LinkedIn" },
-    { href: "https://www.youtube.com/@solihunsir", icon: "ri-youtube-fill", label: "YouTube" },
+  const links = [
+    { href:"#beranda", l:"Beranda" }, { href:"#tentang", l:"Tentang" },
+    { href:"#proyek",  l:"Proyek"  }, { href:"#agenda",  l:"Agenda"  },
+    { href:"#kontak",  l:"Kontak"  },
   ];
-
-  const footerLinks = [
-    { href: "#beranda", label: "Beranda" },
-    { href: "#tentang", label: "Tentang" },
-    { href: "#proyek", label: "Proyek" },
-    { href: "#agenda", label: "Agenda" },
-    { href: "#kontak", label: "Kontak" },
+  const socials = [
+    { href:"https://github.com/solihunsir",          icon:"ri-github-fill",    label:"GitHub" },
+    { href:"https://www.instagram.com/solihunsir",   icon:"ri-instagram-fill", label:"Instagram" },
+    { href:"https://www.linkedin.com/in/m-sholihun", icon:"ri-linkedin-fill",  label:"LinkedIn" },
+    { href:"https://www.youtube.com/@solihunsir",    icon:"ri-youtube-fill",   label:"YouTube" },
   ];
 
   return (
-    <footer className="footer-bg">
-      <div className="container-custom py-14">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 items-start">
+    <footer className="footer">
+      <div className="container">
+        <div style={{ display:"grid", gridTemplateColumns:"1fr", gap:"2rem" }} className="footer-grid">
 
-          {/* Brand Column */}
+          {/* Brand */}
           <div>
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">S</span>
-              </div>
-              <h2 className="text-xl font-bold text-white">
-                Sholihun<span className="text-blue-400">.</span>
-              </h2>
+            <div style={{ display:"flex", alignItems:"center", gap:"0.5rem", marginBottom:"0.75rem" }}>
+              <span style={{
+                width:30, height:30, background:"#276EF1",
+                borderRadius:8, display:"flex", alignItems:"center", justifyContent:"center",
+                color:"#fff", fontWeight:800, fontSize:"0.8rem", flexShrink:0,
+              }}>S</span>
+              <span style={{ fontWeight:800, fontSize:"1rem", color:"#fff" }}>
+                Sholihun<span style={{ color:"#60a5fa" }}>.</span>
+              </span>
             </div>
-            <p className="text-slate-400 text-sm leading-relaxed mb-5 max-w-xs">
-              Fresh Graduate Teknik Informatika yang bersemangat membangun
-              solusi digital yang berdampak.
+            <p style={{ fontSize:"0.8rem", color:"#94a3b8", lineHeight:1.65, maxWidth:240, marginBottom:"1rem" }}>
+              Fresh Graduate Teknik Informatika yang bersemangat membangun solusi digital berdampak.
             </p>
-            {/* Social Icons */}
-            <div className="flex gap-3">
-              {socialLinks.map((social) => (
-                <a
-                  key={social.href}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-9 h-9 flex items-center justify-center rounded-lg bg-white/10 hover:bg-blue-600 text-slate-300 hover:text-white transition-all duration-200"
-                  aria-label={social.label}
+            <div style={{ display:"flex", gap:"0.5rem", flexWrap:"wrap" }}>
+              {socials.map(s => (
+                <a key={s.href} href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.label}
+                  style={{
+                    width:32, height:32, borderRadius:8,
+                    background:"rgba(255,255,255,0.08)",
+                    display:"flex", alignItems:"center", justifyContent:"center",
+                    color:"#94a3b8", fontSize:"0.95rem", textDecoration:"none",
+                    transition:"all 0.2s",
+                  }}
+                  onMouseEnter={e => { e.currentTarget.style.background="#276EF1"; e.currentTarget.style.color="#fff"; }}
+                  onMouseLeave={e => { e.currentTarget.style.background="rgba(255,255,255,0.08)"; e.currentTarget.style.color="#94a3b8"; }}
                 >
-                  <i className={`${social.icon}`}></i>
+                  <i className={s.icon}></i>
                 </a>
               ))}
             </div>
           </div>
 
-          {/* Navigation Links */}
+          {/* Nav */}
           <div>
-            <h3 className="text-white font-semibold mb-4 text-sm uppercase tracking-wider">Navigasi</h3>
-            <ul className="space-y-2.5">
-              {footerLinks.map((link) => (
-                <li key={link.href}>
-                  <a
-                    href={link.href}
-                    className="text-slate-400 hover:text-blue-400 transition-colors text-sm"
+            <p style={{ fontSize:"0.65rem", fontWeight:700, color:"#fff", textTransform:"uppercase", letterSpacing:"0.1em", marginBottom:"0.75rem" }}>
+              Navigasi
+            </p>
+            <ul style={{ listStyle:"none", margin:0, padding:0, display:"flex", flexDirection:"column", gap:"0.5rem" }}>
+              {links.map(l => (
+                <li key={l.href}>
+                  <a href={l.href} style={{
+                    fontSize:"0.82rem", color:"#94a3b8", textDecoration:"none", transition:"color 0.15s",
+                  }}
+                    onMouseEnter={e => e.currentTarget.style.color="#60a5fa"}
+                    onMouseLeave={e => e.currentTarget.style.color="#94a3b8"}
                   >
-                    {link.label}
+                    {l.l}
                   </a>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Contact Info */}
+          {/* Contact */}
           <div>
-            <h3 className="text-white font-semibold mb-4 text-sm uppercase tracking-wider">Kontak</h3>
-            <ul className="space-y-3">
-              <li className="flex items-center gap-3 text-slate-400 text-sm">
-                <i className="ri-mail-line text-blue-400 flex-shrink-0"></i>
+            <p style={{ fontSize:"0.65rem", fontWeight:700, color:"#fff", textTransform:"uppercase", letterSpacing:"0.1em", marginBottom:"0.75rem" }}>
+              Kontak
+            </p>
+            <ul style={{ listStyle:"none", margin:0, padding:0, display:"flex", flexDirection:"column", gap:"0.6rem" }}>
+              <li style={{ display:"flex", alignItems:"center", gap:"0.5rem", fontSize:"0.8rem", color:"#94a3b8" }}>
+                <i className="ri-mail-line" style={{ color:"#60a5fa", flexShrink:0 }}></i>
                 solihun.bks2019@gmail.com
               </li>
-              <li className="flex items-center gap-3 text-slate-400 text-sm">
-                <i className="ri-map-pin-line text-blue-400 flex-shrink-0"></i>
+              <li style={{ display:"flex", alignItems:"center", gap:"0.5rem", fontSize:"0.8rem", color:"#94a3b8" }}>
+                <i className="ri-map-pin-line" style={{ color:"#60a5fa", flexShrink:0 }}></i>
                 Bengkalis, Riau, Indonesia
               </li>
-              <li>
-                <a
-                  href="https://bit.ly/4fsgT26"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 mt-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors"
-                >
-                  <i className="ri-download-line"></i>
-                  Download CV
+              <li style={{ marginTop:"0.5rem" }}>
+                <a href="https://bit.ly/4fsgT26" target="_blank" rel="noopener noreferrer"
+                  className="btn btn-primary" style={{ fontSize:"0.78rem", padding:"0.45rem 1rem" }}>
+                  <i className="ri-download-line"></i> Download CV
                 </a>
               </li>
             </ul>
           </div>
         </div>
 
-        {/* Bottom Bar */}
-        <div className="border-t border-white/10 mt-10 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-slate-500 text-sm">
-            © {currentYear} M. Sholihun. All rights reserved.
-          </p>
-          <p className="text-slate-500 text-sm">
-            Made with <span className="text-red-400">❤</span> using React & Vite
-          </p>
+        {/* Bottom */}
+        <div style={{
+          borderTop:"1px solid rgba(255,255,255,0.08)",
+          marginTop:"2.5rem", paddingTop:"1.5rem",
+          display:"flex", flexWrap:"wrap", justifyContent:"space-between", gap:"0.5rem",
+        }}>
+          <p style={{ fontSize:"0.75rem", color:"#475569" }}>© {year} M. Sholihun. All rights reserved.</p>
+          <p style={{ fontSize:"0.75rem", color:"#475569" }}>Made with <span style={{ color:"#f87171" }}>❤</span> using React &amp; Vite</p>
         </div>
       </div>
+
+      <style>{`
+        @media (min-width: 640px) { .footer-grid { grid-template-columns: 2fr 1fr 1fr !important; } }
+      `}</style>
     </footer>
   );
-};
-
-export default Footer;
+}

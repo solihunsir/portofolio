@@ -1,131 +1,155 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { listAgenda } from "../data";
 
-const Agenda = () => {
-  const [lightbox, setLightbox] = useState(null); // { src, name }
+// Komponen overlay mandiri - render ke luar semua container
+function Overlay({ src, alt, onClose }) {
+  const overlayRef = useRef(null);
 
-  // Close on Escape key
+  // Inject elemen langsung ke <html> agar bebas dari semua stacking context
   useEffect(() => {
-    if (!lightbox) return;
-    const onKey = (e) => { if (e.key === "Escape") setLightbox(null); };
+    const el = document.createElement("div");
+    el.id = "agenda-lightbox-root";
+    Object.assign(el.style, {
+      position: "fixed",
+      inset: "0",
+      width: "100%",
+      height: "100%",
+      background: "rgba(0,0,0,0.88)",
+      zIndex: "999999",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      flexDirection: "column",
+      gap: "0px",
+    });
+    el.onclick = (e) => { if (e.target === el) onClose(); };
+
+    // Close button
+    const btn = document.createElement("button");
+    btn.textContent = "✕";
+    Object.assign(btn.style, {
+      position: "fixed",
+      top: "16px",
+      right: "16px",
+      width: "42px",
+      height: "42px",
+      borderRadius: "50%",
+      background: "rgba(255,255,255,0.2)",
+      border: "1.5px solid rgba(255,255,255,0.5)",
+      color: "#fff",
+      fontSize: "20px",
+      cursor: "pointer",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      zIndex: "1000000",
+    });
+    btn.onclick = onClose;
+
+    // Image
+    const img = document.createElement("img");
+    img.src = src;
+    img.alt = alt;
+    Object.assign(img.style, {
+      maxWidth: "88vw",
+      maxHeight: "82vh",
+      borderRadius: "10px",
+      boxShadow: "0 10px 60px rgba(0,0,0,0.8)",
+      display: "block",
+    });
+    img.onclick = (e) => e.stopPropagation();
+
+    el.appendChild(img);
+    el.appendChild(btn);
+    document.documentElement.appendChild(el);
+
+    // Escape key
+    const onKey = (e) => { if (e.key === "Escape") onClose(); };
     window.addEventListener("keydown", onKey);
-    // Prevent body scroll when modal open
-    document.body.style.overflow = "hidden";
+
     return () => {
+      document.documentElement.removeChild(el);
       window.removeEventListener("keydown", onKey);
-      document.body.style.overflow = "";
     };
-  }, [lightbox]);
+  }, [src, alt, onClose]);
+
+  return null;
+}
+
+export default function Agenda() {
+  const [active, setActive] = useState(null);
 
   return (
     <>
-      {/* ── Lightbox Modal ── */}
-      {lightbox && (
-        <div
-          className="lightbox-overlay"
-          onClick={() => setLightbox(null)}
-          role="dialog"
-          aria-modal="true"
-          aria-label={`Gambar: ${lightbox.name}`}
-        >
-          {/* Close button */}
-          <button
-            className="lightbox-close"
-            onClick={() => setLightbox(null)}
-            aria-label="Tutup"
-          >
-            <i className="ri-close-line"></i>
-          </button>
-
-          {/* Image */}
-          <div onClick={(e) => e.stopPropagation()}>
-            <img
-              src={lightbox.src}
-              alt={lightbox.name}
-              className="lightbox-img"
-            />
-            <p className="text-white text-center mt-3 text-sm font-medium opacity-80">
-              {lightbox.name}
-            </p>
-          </div>
-        </div>
+      {active && (
+        <Overlay
+          src={active.src}
+          alt={active.alt}
+          onClose={() => setActive(null)}
+        />
       )}
 
-      {/* ── Section ── */}
-      <section className="section-padding bg-primary" id="agenda">
-        <div className="container-custom">
-
-          {/* Section Header */}
-          <div className="text-center max-w-xl mx-auto mb-12">
-            <div className="section-label justify-center">
-              <i className="ri-trophy-line"></i>
-              Pencapaian
-            </div>
-            <h2
-              className="text-navy mb-3"
-              data-aos="fade-up"
-              data-aos-duration="800"
-            >
-              Agenda &amp; <span className="text-accent">Pencapaian</span>
+      <section className="section sec-b" id="agenda">
+        <div className="container">
+          <div style={{ textAlign: "center", marginBottom: "2.75rem" }}>
+            <span className="section-badge">
+              <i className="ri-trophy-line"></i> Pencapaian
+            </span>
+            <h2 className="heading-lg">
+              Agenda &amp; <span className="text-blue">Pencapaian</span>
             </h2>
-            <p
-              className="text-slate-500 text-sm"
-              data-aos="fade-up"
-              data-aos-duration="800"
-              data-aos-delay="100"
-            >
-              Berikut ini beberapa Agenda dan Pencapaian selama masa perkuliahan.
-              Klik gambar untuk memperbesar.
+            <p className="text-body" style={{ maxWidth: 420, margin: "0.5rem auto 0" }}>
+              Beberapa agenda dan pencapaian selama masa perkuliahan.{" "}
+              <span style={{ color: "#276EF1", fontWeight: 600 }}>
+                Klik gambar untuk memperbesar.
+              </span>
             </p>
           </div>
 
-          {/* Agenda Grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-            {listAgenda.map((agenda, index) => (
+          <div
+            className="agenda-grid"
+            style={{ display: "grid", gridTemplateColumns: "repeat(2,1fr)", gap: "1rem" }}
+          >
+            {listAgenda.map((a) => (
               <div
-                key={agenda.id}
-                className="card overflow-hidden group cursor-zoom-in"
-                data-aos="fade-up"
-                data-aos-duration="600"
-                data-aos-delay={index * 70}
-                onClick={() => setLightbox({ src: agenda.gambar, name: agenda.nama })}
-                title="Klik untuk memperbesar"
+                key={a.id}
+                className="card"
+                style={{ overflow: "hidden", cursor: "pointer" }}
+                onClick={() => setActive({ src: a.gambar, alt: a.nama })}
               >
-                {/* Image */}
-                <div className="relative overflow-hidden aspect-[4/3] bg-slate-100">
-                  <img
-                    src={agenda.gambar}
-                    alt={agenda.nama}
-                    className="w-full h-full object-cover transition-transform duration-400 group-hover:scale-105"
-                    loading="lazy"
-                  />
-                  {/* Blue top accent bar */}
-                  <div className="absolute top-0 left-0 right-0 h-[3px] bg-accent" />
-
-                  {/* Hover overlay with zoom icon */}
-                  <div className="absolute inset-0 bg-blue-900/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <div className="bg-white/90 rounded-full w-10 h-10 flex items-center justify-center">
-                      <i className="ri-zoom-in-line text-accent ri-lg"></i>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Info */}
-                <div className="p-3">
-                  <h3 className="text-xs font-bold text-navy leading-snug group-hover:text-accent transition-colors mb-1">
-                    {agenda.nama}
-                  </h3>
-                  <p className="text-[11px] text-slate-400 leading-relaxed line-clamp-2">
-                    {agenda.desk}
+                <img
+                  src={a.gambar}
+                  alt={a.nama}
+                  loading="lazy"
+                  style={{
+                    display: "block",
+                    width: "100%",
+                    height: "180px",
+                    objectFit: "cover",
+                  }}
+                />
+                <div style={{ padding: "0.7rem 0.85rem 0.85rem" }}>
+                  <p style={{ fontSize: "0.78rem", fontWeight: 700, color: "#041E42", margin: "0 0 0.2rem" }}>
+                    {a.nama}
+                  </p>
+                  <p style={{
+                    fontSize: "0.67rem", color: "#64748b", lineHeight: 1.5, margin: 0,
+                    overflow: "hidden", display: "-webkit-box",
+                    WebkitLineClamp: 2, WebkitBoxOrient: "vertical",
+                  }}>
+                    {a.desk}
                   </p>
                 </div>
               </div>
             ))}
           </div>
         </div>
+
+        <style>{`
+          @media (min-width: 640px)  { .agenda-grid { grid-template-columns: repeat(3,1fr) !important; } }
+          @media (min-width: 1024px) { .agenda-grid { grid-template-columns: repeat(4,1fr) !important; } }
+        `}</style>
       </section>
     </>
   );
-};
-
-export default Agenda;
+}

@@ -1,75 +1,88 @@
 import { DataImage } from "../data";
 
-const About = () => {
+export default function About() {
   const stats = [
-    { number: "15+", label: "Proyek Selesai",   icon: "ri-folder-line" },
-    { number: "3+",  label: "Tahun Pengalaman", icon: "ri-time-line" },
-    { number: "8+",  label: "Sertifikasi",      icon: "ri-award-line" },
-    { number: "5+",  label: "Penghargaan",      icon: "ri-trophy-line" },
+    { n:"15+", l:"Proyek Selesai",   icon:"ri-folder-line" },
+    { n:"3+",  l:"Tahun Pengalaman", icon:"ri-time-line" },
+    { n:"8+",  l:"Sertifikasi",      icon:"ri-award-line" },
+    { n:"5+",  l:"Penghargaan",      icon:"ri-trophy-line" },
   ];
 
   return (
-    <section className="section-padding bg-secondary" id="tentang">
-      <div className="container-custom">
-        <div className="grid md:grid-cols-2 gap-12 lg:gap-20 items-center">
+    <section className="section sec-a" id="tentang">
+      <div className="container">
+        <div style={{
+          display:"grid",
+          gridTemplateColumns:"1fr",
+          gap:"2.5rem",
+          alignItems:"center",
+        }} className="about-grid">
 
-          {/* Image Column */}
-          <div className="relative" data-aos="fade-right" data-aos-duration="800">
-            <div className="relative inline-block w-full max-w-xs mx-auto md:mx-0">
-              <div className="absolute -top-3 -left-3 w-full h-full bg-blue-100 rounded-2xl" />
+          {/* Photo */}
+          <div style={{ display:"flex", justifyContent:"center" }}>
+            <div style={{ position:"relative", maxWidth:320, width:"100%" }}>
+              <div style={{
+                position:"absolute", top:-10, left:-10,
+                width:"100%", height:"100%",
+                background:"rgba(39,110,241,0.12)",
+                borderRadius:18, zIndex:0,
+              }} />
               <img
                 src={DataImage.HeroImage}
-                alt="Profile"
-                className="relative w-full rounded-2xl shadow-lg object-cover"
-                loading="lazy"
+                alt="M. Sholihun"
+                style={{
+                  position:"relative", zIndex:1,
+                  width:"100%", borderRadius:16,
+                  boxShadow:"0 12px 40px rgba(39,110,241,0.15)",
+                  border:"3px solid rgba(255,255,255,0.85)",
+                  objectFit:"cover",
+                }}
               />
-              {/* Experience badge */}
-              <div className="absolute -bottom-4 -right-4 bg-white rounded-xl shadow-lg px-4 py-3 border border-slate-100">
-                <p className="text-2xl font-bold text-accent leading-none">3+</p>
-                <p className="text-[11px] text-slate-400 font-medium mt-0.5">Tahun<br />Pengalaman</p>
+              <div style={{
+                position:"absolute", bottom:-14, right:-14, zIndex:2,
+                background:"rgba(255,255,255,0.97)", backdropFilter:"blur(10px)",
+                border:"1px solid rgba(39,110,241,0.12)",
+                borderRadius:12, padding:"0.6rem 0.9rem",
+                boxShadow:"0 4px 20px rgba(39,110,241,0.12)",
+              }}>
+                <p style={{ fontSize:"1.5rem", fontWeight:800, color:"#276EF1", lineHeight:1 }}>3+</p>
+                <p style={{ fontSize:"0.68rem", color:"#64748b", marginTop:2 }}>Tahun<br/>Pengalaman</p>
               </div>
             </div>
           </div>
 
-          {/* Text Column */}
-          <div data-aos="fade-left" data-aos-duration="800" data-aos-delay="150">
-            <div className="section-label">
-              <i className="ri-user-heart-line"></i>
-              Tentang Saya
-            </div>
-
-            <h2 className="text-navy mb-3">
-              Passionate Developer &amp;<br />
-              <span className="text-accent">Lifelong Learner</span>
+          {/* Text */}
+          <div>
+            <span className="section-badge">
+              <i className="ri-user-heart-line"></i> Tentang Saya
+            </span>
+            <h2 className="heading-lg" style={{ marginBottom:"0.5rem" }}>
+              Passionate Developer &amp;<br/>
+              <span className="text-blue">Lifelong Learner</span>
             </h2>
-
-            <div className="divider" />
-
-            <p className="text-slate-600 text-sm mb-3">
+            <div className="accent-line" />
+            <p className="text-body" style={{ marginBottom:"0.85rem" }}>
               Saya adalah Fresh Graduate Jurusan Teknik Informatika di Politeknik Negeri Bengkalis
-              dengan minat besar dalam pengembangan aplikasi mobile dan web app.
+              dengan minat besar dalam pengembangan aplikasi mobile dan web.
             </p>
-            <p className="text-slate-600 text-sm mb-7">
-              Berpengalaman dalam organisasi, kepanitiaan, dan kompetisi di bidang teknologi dan
-              olahraga. Tersertifikasi di bidang Front-End &amp; Back-End Developer serta Pemrograman
-              dengan Kotlin dari Dicoding untuk memperkuat kompetensi dalam pengembangan aplikasi mobile.
+            <p className="text-body" style={{ marginBottom:"1.75rem" }}>
+              Berpengalaman dalam organisasi, kepanitiaan, dan kompetisi teknologi. Tersertifikasi
+              Front-End &amp; Back-End Developer serta Pemrograman Kotlin dari Dicoding.
             </p>
 
-            {/* Stats Grid */}
-            <div className="grid grid-cols-2 gap-3">
-              {stats.map((stat, index) => (
-                <div
-                  key={index}
-                  className="card p-4 flex items-center gap-3"
-                  data-aos="fade-up"
-                  data-aos-delay={index * 80}
-                >
-                  <div className="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center flex-shrink-0">
-                    <i className={`${stat.icon} text-accent`}></i>
+            {/* Stats grid */}
+            <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"0.75rem" }}>
+              {stats.map(s => (
+                <div key={s.l} className="card" style={{ padding:"0.9rem 1rem", display:"flex", alignItems:"center", gap:"0.75rem" }}>
+                  <div style={{
+                    width:36, height:36, background:"rgba(39,110,241,0.1)",
+                    borderRadius:9, display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0,
+                  }}>
+                    <i className={`${s.icon}`} style={{ color:"#276EF1", fontSize:"1rem" }}></i>
                   </div>
                   <div>
-                    <p className="text-xl font-bold text-navy leading-none">{stat.number}</p>
-                    <p className="text-[11px] text-slate-400 font-medium mt-0.5">{stat.label}</p>
+                    <p style={{ fontSize:"1.15rem", fontWeight:800, color:"#041E42", lineHeight:1 }}>{s.n}</p>
+                    <p style={{ fontSize:"0.68rem", color:"#64748b", marginTop:2 }}>{s.l}</p>
                   </div>
                 </div>
               ))}
@@ -77,8 +90,12 @@ const About = () => {
           </div>
         </div>
       </div>
+
+      <style>{`
+        @media (min-width: 768px) {
+          .about-grid { grid-template-columns: 1fr 1fr !important; }
+        }
+      `}</style>
     </section>
   );
-};
-
-export default About;
+}

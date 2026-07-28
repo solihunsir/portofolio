@@ -1,131 +1,178 @@
 import { useState, useEffect } from "react";
 import { DataImage } from "../data";
 
-const CV_LINK = "https://bit.ly/4fsgT26";
+const CV = "https://bit.ly/4fsgT26";
 
-const Hero = () => {
-  const [hasScrolled, setHasScrolled] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 100) setHasScrolled(true);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+export default function Hero() {
+  const [showOTW, setShowOTW] = useState(false);
 
   return (
-    <section className="hero-bg min-h-screen flex items-center pt-20 pb-14" id="beranda">
-      {/* ── Floating Orbs (Dicoding-style animated background) ── */}
-      <div className="orb orb-1" aria-hidden="true" />
-      <div className="orb orb-2" aria-hidden="true" />
-      <div className="orb orb-3" aria-hidden="true" />
-      <div className="orb orb-4" aria-hidden="true" />
-      <div className="orb-ring"  aria-hidden="true" />
+    <section className="hero-section" id="beranda">
+      {/* Cloud blobs */}
+      <div className="blob blob-1" />
+      <div className="blob blob-2" />
+      <div className="blob blob-3" />
 
-      <div className="container-custom w-full relative z-10">
-        <div className="grid md:grid-cols-2 items-center gap-10 lg:gap-16">
+      <div className="container">
+        <div className="hero-grid">
 
-          {/* ── Text Content ── */}
-          <div data-aos="fade-right" data-aos-duration="800">
-            {/* Badge */}
-            <div className="section-label">
-              <i className="ri-user-line text-xs"></i>
-              Fresh Graduate
-            </div>
+          {/* ── LEFT: Text ── */}
+          <div>
+            <span className="section-badge">
+              <i className="ri-user-3-line"></i> Fresh Graduate
+            </span>
 
-            {/* Heading */}
-            <h1 className="text-navy mb-3">
-              Halo, Saya{" "}
-              <span className="text-accent">M. Sholihun</span>
+            <h1 className="heading-xl" style={{ marginBottom:"0.5rem" }}>
+              Halo, Saya<br />
+              <span className="text-blue">M. Sholihun</span>
             </h1>
 
-            {/* Role */}
-            <p className="text-slate-500 font-semibold text-base mb-3">
+            <p style={{ fontWeight:600, fontSize:"0.95rem", color:"#475569", marginBottom:"0.9rem" }}>
               Mobile &amp; Web Developer
             </p>
 
-            {/* Description */}
-            <p className="text-slate-600 mb-7 max-w-md">
+            <p className="text-body" style={{ maxWidth:440, marginBottom:"1.75rem" }}>
               Fresh Graduate Teknik Informatika di Politeknik Negeri Bengkalis.
-              Berpengalaman dalam pengembangan aplikasi mobile &amp; web, aktif di
+              Berpengalaman dalam pengembangan aplikasi mobile &amp; web, serta aktif di
               organisasi, kompetisi, dan Coding Camp DBS Foundation 2025.
             </p>
 
-            {/* CTA Buttons */}
-            <div className="flex flex-wrap items-center gap-3">
-              <a href={CV_LINK} target="_blank" rel="noopener noreferrer" className="btn-primary">
-                Download CV <i className="ri-download-line"></i>
+            {/* Buttons */}
+            <div style={{ display:"flex", flexWrap:"wrap", gap:"0.75rem", marginBottom:"2.25rem" }}>
+              <a href={CV} target="_blank" rel="noopener noreferrer" className="btn btn-primary">
+                <i className="ri-download-line"></i> Download CV
               </a>
-              <a href="#proyek" className="btn-outline">
+              <a href="#proyek" className="btn btn-outline">
                 Lihat Proyek <i className="ri-arrow-right-line"></i>
               </a>
             </div>
 
-            {/* Stats Row */}
-            <div className="flex items-center gap-7 mt-9 pt-7 border-t border-slate-200">
-              <div>
-                <p className="text-2xl font-bold text-navy">15<span className="text-accent">+</span></p>
-                <p className="text-xs text-slate-500 mt-0.5">Proyek Selesai</p>
+            {/* Stats */}
+            <div style={{
+              display:"flex", flexWrap:"wrap", gap:"2rem",
+              paddingTop:"1.5rem",
+              borderTop:"1px solid rgba(39,110,241,0.15)",
+            }}>
+              {[["15","Proyek Selesai"],["3","Tahun Pengalaman"],["8","Sertifikasi"]].map(([n,l]) => (
+                <div key={l}>
+                  <p style={{ fontSize:"1.7rem", fontWeight:800, color:"#041E42", lineHeight:1 }}>
+                    {n}<span style={{ color:"#276EF1" }}>+</span>
+                  </p>
+                  <p style={{ fontSize:"0.72rem", color:"#94a3b8", marginTop:"0.2rem" }}>{l}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* ── RIGHT: Photo – top-right, floating ── */}
+          <div style={{
+            display:"flex",
+            justifyContent:"flex-end",
+            alignItems:"flex-start",
+            paddingTop:"0.5rem",
+          }}>
+            <div style={{ position:"relative", animation:"float-up 5s ease-in-out infinite" }}>
+
+              {/* Photo */}
+              <div
+                onClick={() => setShowOTW(v => !v)}
+                title="Klik untuk melihat status"
+                style={{
+                  position:"relative",
+                  width: "clamp(220px, 22vw, 300px)",
+                  aspectRatio:"3/4",
+                  borderRadius:20,
+                  overflow:"hidden",
+                  cursor:"pointer",
+                  boxShadow:"0 20px 60px rgba(39,110,241,0.18), 0 4px 16px rgba(0,0,0,0.07)",
+                  border:"3px solid rgba(255,255,255,0.88)",
+                  flexShrink:0,
+                }}
+              >
+                <img
+                  src={DataImage.HeroImage}
+                  alt="M. Sholihun"
+                  style={{
+                    width:"100%", height:"100%",
+                    objectFit:"cover", objectPosition:"center top",
+                    transition:"transform 0.4s ease",
+                    transform: showOTW ? "scale(1.06)" : "scale(1)",
+                  }}
+                />
+
+                {/* Open To Work overlay */}
+                {showOTW && (
+                  <div
+                    onClick={e => { e.stopPropagation(); setShowOTW(false); }}
+                    style={{
+                      position:"absolute", inset:0,
+                      background:"linear-gradient(145deg,rgba(4,30,66,0.9),rgba(39,110,241,0.88))",
+                      display:"flex", flexDirection:"column", alignItems:"center",
+                      justifyContent:"center", gap:"0.6rem",
+                      animation:"otw-in 0.25s ease",
+                      cursor:"pointer",
+                    }}
+                  >
+                    <span style={{
+                      width:12, height:12, borderRadius:"50%",
+                      background:"#22c55e", display:"block",
+                      animation:"otw-pulse 2s ease-in-out infinite",
+                    }} />
+                    <p style={{
+                      color:"#fff", fontWeight:800, textAlign:"center",
+                      fontSize:"clamp(1rem,3vw,1.4rem)", lineHeight:1.2,
+                      animation:"otw-swing 2s ease-in-out infinite",
+                      display:"inline-block",
+                    }}>
+                      Open To Work
+                    </p>
+                    <p style={{ color:"rgba(255,255,255,0.5)", fontSize:"0.68rem" }}>
+                      Klik untuk menutup
+                    </p>
+                  </div>
+                )}
               </div>
-              <div className="w-px h-8 bg-slate-200" />
-              <div>
-                <p className="text-2xl font-bold text-navy">3<span className="text-accent">+</span></p>
-                <p className="text-xs text-slate-500 mt-0.5">Tahun Pengalaman</p>
-              </div>
-              <div className="w-px h-8 bg-slate-200" />
-              <div>
-                <p className="text-2xl font-bold text-navy">8<span className="text-accent">+</span></p>
-                <p className="text-xs text-slate-500 mt-0.5">Sertifikasi</p>
+
+              {/* Status badge – bottom-left of photo */}
+              {!showOTW && (
+                <div style={{
+                  position:"absolute", bottom:"-1rem", left:"-1.25rem",
+                  background:"rgba(255,255,255,0.97)", backdropFilter:"blur(10px)",
+                  border:"1px solid rgba(39,110,241,0.12)",
+                  borderRadius:12, padding:"0.55rem 0.85rem",
+                  display:"flex", alignItems:"center", gap:"0.55rem",
+                  boxShadow:"0 4px 20px rgba(39,110,241,0.12)",
+                  zIndex:5,
+                }}>
+                  <div style={{
+                    width:30, height:30, background:"#EEF3FE",
+                    borderRadius:8, display:"flex", alignItems:"center", justifyContent:"center",
+                  }}>
+                    <i className="ri-briefcase-4-line" style={{ color:"#276EF1", fontSize:"0.85rem" }}></i>
+                  </div>
+                  <div>
+                    <p style={{ fontSize:"0.58rem", color:"#94a3b8", fontWeight:600, textTransform:"uppercase", letterSpacing:"0.06em" }}>Status</p>
+                    <p style={{ fontSize:"0.72rem", fontWeight:700, color:"#041E42" }}>Open to Work</p>
+                  </div>
+                </div>
+              )}
+
+              {/* Year badge – top-right of photo */}
+              <div style={{
+                position:"absolute", top:"-0.7rem", right:"-0.7rem",
+                background:"#276EF1", color:"#fff",
+                borderRadius:9, padding:"0.3rem 0.65rem",
+                fontSize:"0.67rem", fontWeight:700,
+                boxShadow:"0 3px 10px rgba(39,110,241,0.35)",
+                zIndex:5,
+              }}>
+                2025 🎓
               </div>
             </div>
           </div>
 
-          {/* ── Profile Image ── */}
-          <div
-            className="relative flex justify-center md:justify-end"
-            data-aos="fade-left"
-            data-aos-duration="800"
-            data-aos-delay="150"
-          >
-            {/* circle bg */}
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-72 h-72 md:w-80 md:h-80 rounded-full bg-blue-100/70" />
-            </div>
-
-            <div className="relative z-10">
-              <img
-                src={DataImage.HeroImage}
-                alt="M. Sholihun"
-                className="w-64 md:w-72 rounded-2xl shadow-xl float-animation object-cover"
-                loading="lazy"
-              />
-              {/* Floating badge */}
-              <div className="absolute -bottom-4 -left-6 bg-white rounded-xl shadow-lg px-3 py-2.5 flex items-center gap-2.5 border border-slate-100">
-                <div className="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center">
-                  <i className="ri-code-s-slash-line text-accent text-sm"></i>
-                </div>
-                <div>
-                  <p className="text-[10px] text-slate-400 leading-none">Status</p>
-                  <p className="text-xs font-bold text-navy leading-snug">Open to Work</p>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
-
-        {/* Scroll Indicator */}
-        {!hasScrolled && (
-          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 hidden md:block">
-            <a href="#tentang" className="flex flex-col items-center gap-1.5 text-slate-400 hover:text-accent transition-colors animate-bounce">
-              <span className="text-xs font-medium">Scroll</span>
-              <i className="ri-arrow-down-line"></i>
-            </a>
-          </div>
-        )}
       </div>
     </section>
   );
-};
-
-export default Hero;
+}

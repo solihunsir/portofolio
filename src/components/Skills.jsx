@@ -1,62 +1,51 @@
 import { listTools } from "../data";
 
-const Skills = () => {
+export default function Skills() {
   return (
-    <section className="section-padding bg-primary" id="tools">
-      <div className="container-custom">
-
-        {/* Section Header */}
-        <div className="text-center max-w-xl mx-auto mb-12">
-          <div className="section-label justify-center">
-            <i className="ri-tools-line"></i>
-            Tech Stack
-          </div>
-          <h2
-            className="text-navy mb-3"
-            data-aos="fade-up"
-            data-aos-duration="800"
-          >
-            Tools yang <span className="text-accent">Saya Pakai</span>
+    <section className="section sec-b" id="tools">
+      <div className="container">
+        {/* Header */}
+        <div style={{ textAlign:"center", marginBottom:"2.75rem" }}>
+          <span className="section-badge">
+            <i className="ri-tools-line"></i> Tech Stack
+          </span>
+          <h2 className="heading-lg">
+            Tools yang <span className="text-blue">Saya Pakai</span>
           </h2>
-          <p
-            className="text-slate-500 text-sm"
-            data-aos="fade-up"
-            data-aos-duration="800"
-            data-aos-delay="100"
-          >
-            Teknologi dan tools yang biasa saya gunakan untuk membuat Website
-            maupun Mobile App
+          <p className="text-body" style={{ maxWidth:420, margin:"0.5rem auto 0" }}>
+            Teknologi dan tools yang biasa saya gunakan untuk membangun Website maupun Mobile App.
           </p>
         </div>
 
-        {/* Tools Grid */}
-        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3 md:gap-4">
-          {listTools.map((tool) => (
-            <div
-              key={tool.id}
-              className="card p-4 flex flex-col items-center gap-2.5 cursor-pointer group"
-              data-aos="fade-up"
-              data-aos-duration="600"
-              data-aos-delay={tool.dad}
-            >
-              <div className="w-12 h-12 flex items-center justify-center bg-slate-50 rounded-xl group-hover:bg-blue-50 transition-colors p-1.5">
-                <img
-                  src={tool.gambar}
-                  alt={tool.nama}
-                  className="w-full h-full object-contain"
-                  loading="lazy"
-                />
+        {/* Grid: 2 → 3 → 4 → 6 cols */}
+        <div style={{
+          display:"grid",
+          gridTemplateColumns:"repeat(3, 1fr)",
+          gap:"0.875rem",
+        }} className="skills-grid">
+          {listTools.map(tool => (
+            <div key={tool.id} className="card" style={{ padding:"1rem 0.75rem", display:"flex", flexDirection:"column", alignItems:"center", gap:"0.65rem" }}>
+              <div style={{
+                width:46, height:46,
+                background:"rgba(255,255,255,0.8)",
+                borderRadius:12, padding:8,
+                display:"flex", alignItems:"center", justifyContent:"center",
+              }}>
+                <img src={tool.gambar} alt={tool.nama} style={{ width:"100%", height:"100%", objectFit:"contain" }} loading="lazy" />
               </div>
-              <div className="text-center">
-                <h4 className="font-semibold text-xs text-navy leading-tight">{tool.nama}</h4>
-                <p className="text-[10px] text-slate-400 mt-0.5">{tool.ket}</p>
+              <div style={{ textAlign:"center" }}>
+                <p style={{ fontSize:"0.72rem", fontWeight:700, color:"#041E42", lineHeight:1.3 }}>{tool.nama}</p>
+                <p style={{ fontSize:"0.63rem", color:"#94a3b8", marginTop:2 }}>{tool.ket}</p>
               </div>
             </div>
           ))}
         </div>
       </div>
+
+      <style>{`
+        @media (min-width: 480px)  { .skills-grid { grid-template-columns: repeat(4,1fr) !important; } }
+        @media (min-width: 768px)  { .skills-grid { grid-template-columns: repeat(6,1fr) !important; } }
+      `}</style>
     </section>
   );
-};
-
-export default Skills;
+}

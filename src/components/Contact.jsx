@@ -1,134 +1,120 @@
-const Contact = () => {
-  return (
-    <section className="section-padding bg-secondary" id="kontak">
-      <div className="container-custom">
-        <div className="max-w-5xl mx-auto">
+export default function Contact() {
+  const socials = [
+    { icon:"ri-mail-line",      label:"Email",     val:"solihun.bks2019@gmail.com",      href:null },
+    { icon:"ri-github-line",    label:"GitHub",    val:"github.com/solihunsir",           href:"https://github.com/solihunsir" },
+    { icon:"ri-linkedin-line",  label:"LinkedIn",  val:"linkedin.com/in/m-sholihun",      href:"https://www.linkedin.com/in/m-sholihun" },
+    { icon:"ri-instagram-line", label:"Instagram", val:"@solihunsir",                     href:"https://www.instagram.com/solihunsir" },
+  ];
 
-          {/* Section Header */}
-          <div className="text-center mb-10">
-            <div className="section-label justify-center">
-              <i className="ri-mail-line"></i>
-              Kontak
-            </div>
-            <h2
-              className="text-navy mb-3"
-              data-aos="fade-up"
-              data-aos-duration="800"
-            >
-              Mari <span className="text-accent">Terhubung</span>
+  return (
+    <section className="section sec-a" id="kontak">
+      <div className="container">
+        <div style={{ maxWidth:860, margin:"0 auto" }}>
+
+          {/* Header */}
+          <div style={{ textAlign:"center", marginBottom:"2.75rem" }}>
+            <span className="section-badge">
+              <i className="ri-mail-line"></i> Kontak
+            </span>
+            <h2 className="heading-lg">
+              Mari <span className="text-blue">Terhubung</span>
             </h2>
-            <p
-              className="text-slate-500 text-sm max-w-md mx-auto"
-              data-aos="fade-up"
-              data-aos-duration="800"
-              data-aos-delay="100"
-            >
-              Tertarik untuk berkolaborasi? Silakan kirim pesan dan saya akan segera merespons.
+            <p className="text-body" style={{ maxWidth:360, margin:"0.5rem auto 0" }}>
+              Tertarik untuk berkolaborasi? Saya siap merespons pesan Anda.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-5 gap-6 items-start">
+          {/* Grid */}
+          <div style={{ display:"grid", gridTemplateColumns:"1fr", gap:"1.25rem" }} className="contact-grid">
 
-            {/* Contact Info */}
-            <div
-              className="md:col-span-2 space-y-3"
-              data-aos="fade-right"
-              data-aos-duration="800"
-            >
-              {[
-                { icon: "ri-mail-line",      label: "Email",     value: "solihun.bks2019@gmail.com",       href: null },
-                { icon: "ri-github-line",    label: "GitHub",    value: "github.com/solihunsir",           href: "https://github.com/solihunsir" },
-                { icon: "ri-linkedin-line",  label: "LinkedIn",  value: "linkedin.com/in/m-sholihun",      href: "https://www.linkedin.com/in/m-sholihun" },
-                { icon: "ri-instagram-line", label: "Instagram", value: "@solihunsir",                     href: "https://www.instagram.com/solihunsir" },
-              ].map((item, i) => (
-                <div key={i} className="card p-4 flex items-center gap-3">
-                  <div className="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center flex-shrink-0">
-                    <i className={`${item.icon} text-accent`}></i>
+            {/* Left – contact info */}
+            <div style={{ display:"flex", flexDirection:"column", gap:"0.75rem" }}>
+              {socials.map(s => (
+                <div key={s.label} className="card" style={{
+                  padding:"0.85rem 1rem", display:"flex", alignItems:"center", gap:"0.85rem",
+                  borderLeft: "3px solid rgba(39,110,241,0.5)",
+                  boxShadow: "0 2px 8px rgba(39,110,241,0.06)",
+                  transition: "border-color 0.2s, box-shadow 0.2s, transform 0.2s",
+                }}
+                  onMouseEnter={e => { e.currentTarget.style.borderLeftColor="#276EF1"; e.currentTarget.style.boxShadow="0 4px 18px rgba(39,110,241,0.15)"; }}
+                  onMouseLeave={e => { e.currentTarget.style.borderLeftColor="rgba(39,110,241,0.5)"; e.currentTarget.style.boxShadow="0 2px 8px rgba(39,110,241,0.06)"; }}
+                >
+                  <div style={{
+                    width:38, height:38, background:"rgba(39,110,241,0.1)",
+                    borderRadius:9, display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0,
+                  }}>
+                    <i className={s.icon} style={{ color:"#276EF1", fontSize:"1rem" }}></i>
                   </div>
-                  <div className="min-w-0">
-                    <p className="text-[10px] text-slate-400 font-medium">{item.label}</p>
-                    {item.href ? (
-                      <a href={item.href} target="_blank" rel="noopener noreferrer"
-                        className="text-xs font-semibold text-navy hover:text-accent transition-colors truncate block">
-                        {item.value}
+                  <div style={{ minWidth:0 }}>
+                    <p style={{ fontSize:"0.63rem", fontWeight:700, color:"#94a3b8", textTransform:"uppercase", letterSpacing:"0.06em" }}>
+                      {s.label}
+                    </p>
+                    {s.href ? (
+                      <a href={s.href} target="_blank" rel="noopener noreferrer" style={{
+                        fontSize:"0.82rem", fontWeight:600, color:"#041E42",
+                        textDecoration:"none", overflow:"hidden", textOverflow:"ellipsis",
+                        whiteSpace:"nowrap", display:"block",
+                        transition:"color 0.15s",
+                      }}
+                        onMouseEnter={e => e.currentTarget.style.color="#276EF1"}
+                        onMouseLeave={e => e.currentTarget.style.color="#041E42"}
+                      >
+                        {s.val}
                       </a>
                     ) : (
-                      <p className="text-xs font-semibold text-navy truncate">{item.value}</p>
+                      <p style={{ fontSize:"0.82rem", fontWeight:600, color:"#041E42", overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>
+                        {s.val}
+                      </p>
                     )}
                   </div>
                 </div>
               ))}
             </div>
 
-            {/* Contact Form */}
+            {/* Right – form */}
             <form
               action="https://formsubmit.co/solihun.bks2019@gmail.com"
               method="POST"
-              className="md:col-span-3 card p-6"
               autoComplete="off"
-              data-aos="fade-left"
-              data-aos-duration="800"
-              data-aos-delay="150"
+              style={{
+                background:"rgba(255,255,255,0.97)",
+                border:"1.5px solid rgba(39,110,241,0.2)",
+                borderTop: "3px solid #276EF1",
+                borderRadius:16,
+                padding:"1.75rem",
+                boxShadow:"0 6px 32px rgba(39,110,241,0.1)",
+              }}
             >
-              <h3 className="font-bold text-navy mb-5">Kirim Pesan</h3>
+              <h3 className="heading-sm" style={{ marginBottom:"1.25rem" }}>Kirim Pesan</h3>
 
-              <div className="space-y-4">
-                <div className="space-y-1.5">
-                  <label htmlFor="nama" className="text-xs font-semibold text-slate-600 block">
-                    Nama Lengkap
-                  </label>
-                  <input
-                    type="text"
-                    id="nama"
-                    name="nama"
-                    placeholder="Masukan Nama"
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all"
-                    required
-                  />
+              <div style={{ display:"flex", flexDirection:"column", gap:"1rem" }}>
+                {[
+                  { id:"nama",  type:"text",  label:"Nama Lengkap", placeholder:"Masukkan nama Anda" },
+                  { id:"email", type:"email", label:"Email",        placeholder:"Masukkan email Anda" },
+                ].map(f => (
+                  <div key={f.id}>
+                    <label htmlFor={f.id} className="input-label">{f.label}</label>
+                    <input type={f.type} id={f.id} name={f.id} placeholder={f.placeholder} required className="input-field" />
+                  </div>
+                ))}
+                <div>
+                  <label htmlFor="pesan" className="input-label">Pesan</label>
+                  <textarea id="pesan" name="pesan" rows={4} placeholder="Tuliskan pesan Anda di sini…" required className="input-field" style={{ resize:"none" }} />
                 </div>
-
-                <div className="space-y-1.5">
-                  <label htmlFor="email" className="text-xs font-semibold text-slate-600 block">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    placeholder="Masukan Email"
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all"
-                    required
-                  />
-                </div>
-
-                <div className="space-y-1.5">
-                  <label htmlFor="pesan" className="text-xs font-semibold text-slate-600 block">
-                    Pesan
-                  </label>
-                  <textarea
-                    id="pesan"
-                    name="pesan"
-                    rows="5"
-                    placeholder="Masukan Pesan"
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm resize-none focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all"
-                    required
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  className="btn-primary w-full justify-center py-2.5"
-                >
-                  <i className="ri-send-plane-line"></i>
-                  Kirim Pesan
+                <button type="submit" className="btn btn-primary" style={{ width:"100%", justifyContent:"center", padding:"0.7rem 1rem" }}>
+                  <i className="ri-send-plane-line"></i> Kirim Pesan
                 </button>
               </div>
             </form>
           </div>
         </div>
       </div>
+
+      <style>{`
+        @media (min-width: 768px) {
+          .contact-grid { grid-template-columns: 2fr 3fr !important; }
+        }
+      `}</style>
     </section>
   );
-};
-
-export default Contact;
+}

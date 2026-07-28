@@ -1,99 +1,184 @@
+import { useState, useEffect } from "react";
 import { listProyek } from "../data";
 
-const Projects = () => {
+function Overlay({ src, alt, link, onClose }) {
+  useEffect(() => {
+    const el = document.createElement("div");
+    el.id = "proyek-lightbox-root";
+    Object.assign(el.style, {
+      position: "fixed",
+      inset: "0",
+      width: "100%",
+      height: "100%",
+      background: "rgba(0,0,0,0.88)",
+      zIndex: "999999",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      flexDirection: "column",
+      gap: "12px",
+    });
+    el.onclick = (e) => { if (e.target === el) onClose(); };
+
+    // Close button
+    const btn = document.createElement("button");
+    btn.textContent = "✕";
+    Object.assign(btn.style, {
+      position: "fixed",
+      top: "16px",
+      right: "16px",
+      width: "42px",
+      height: "42px",
+      borderRadius: "50%",
+      background: "rgba(255,255,255,0.2)",
+      border: "1.5px solid rgba(255,255,255,0.5)",
+      color: "#fff",
+      fontSize: "20px",
+      cursor: "pointer",
+      zIndex: "1000000",
+    });
+    btn.onclick = onClose;
+
+    // Image
+    const img = document.createElement("img");
+    img.src = src;
+    img.alt = alt;
+    Object.assign(img.style, {
+      maxWidth: "88vw",
+      maxHeight: "74vh",
+      borderRadius: "10px",
+      boxShadow: "0 10px 60px rgba(0,0,0,0.8)",
+      display: "block",
+    });
+    img.onclick = (e) => e.stopPropagation();
+
+    // Caption
+    const cap = document.createElement("p");
+    cap.textContent = alt;
+    Object.assign(cap.style, {
+      color: "#fff",
+      fontSize: "14px",
+      fontWeight: "600",
+      margin: "0",
+      textAlign: "center",
+    });
+    cap.onclick = (e) => e.stopPropagation();
+
+    // Link
+    const a = document.createElement("a");
+    a.href = link;
+    a.target = "_blank";
+    a.rel = "noopener noreferrer";
+    a.textContent = "Lihat Repository";
+    Object.assign(a.style, {
+      background: "#276EF1",
+      color: "#fff",
+      padding: "8px 20px",
+      borderRadius: "8px",
+      fontSize: "13px",
+      fontWeight: "700",
+      textDecoration: "none",
+      display: "inline-block",
+    });
+    a.onclick = (e) => e.stopPropagation();
+
+    el.appendChild(img);
+    el.appendChild(cap);
+    el.appendChild(a);
+    el.appendChild(btn);
+    document.documentElement.appendChild(el);
+
+    const onKey = (e) => { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", onKey);
+
+    return () => {
+      document.documentElement.removeChild(el);
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [src, alt, link, onClose]);
+
+  return null;
+}
+
+export default function Projects() {
+  const [active, setActive] = useState(null);
+
   return (
-    <section className="section-padding bg-secondary" id="proyek">
-      <div className="container-custom">
+    <>
+      {active && (
+        <Overlay
+          src={active.src}
+          alt={active.alt}
+          link={active.link}
+          onClose={() => setActive(null)}
+        />
+      )}
 
-        {/* Section Header */}
-        <div className="text-center max-w-xl mx-auto mb-12">
-          <div className="section-label justify-center">
-            <i className="ri-code-box-line"></i>
-            Portfolio
+      <section className="section sec-a" id="proyek">
+        <div className="container">
+          <div style={{ textAlign: "center", marginBottom: "2.75rem" }}>
+            <span className="section-badge">
+              <i className="ri-code-box-line"></i> Portfolio
+            </span>
+            <h2 className="heading-lg">
+              Proyek <span className="text-blue">Saya</span>
+            </h2>
+            <p className="text-body" style={{ maxWidth: 380, margin: "0.5rem auto 0" }}>
+              Berikut beberapa proyek yang telah saya kerjakan.{" "}
+              <span style={{ color: "#276EF1", fontWeight: 600 }}>
+                Klik gambar untuk memperbesar.
+              </span>
+            </p>
           </div>
-          <h2
-            className="text-navy mb-3"
-            data-aos="fade-up"
-            data-aos-duration="800"
-          >
-            Proyek <span className="text-accent">Saya</span>
-          </h2>
-          <p
-            className="text-slate-500 text-sm"
-            data-aos="fade-up"
-            data-aos-duration="800"
-            data-aos-delay="100"
-          >
-            Berikut ini beberapa proyek yang telah saya kerjakan
-          </p>
-        </div>
 
-        {/* Projects Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {listProyek.map((proyek) => (
-            <div
-              key={proyek.id}
-              className="card overflow-hidden group"
-              data-aos="fade-up"
-              data-aos-duration="800"
-              data-aos-delay={proyek.dad}
-            >
-              {/* Project Image */}
-              <div className="relative overflow-hidden aspect-video bg-slate-100">
-                <img
-                  src={proyek.gambar}
-                  alt={proyek.nama}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  loading="lazy"
-                />
-                {/* Hover overlay */}
-                <div className="absolute inset-0 bg-blue-900/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+          <div
+            className="projects-grid"
+            style={{ display: "grid", gridTemplateColumns: "1fr", gap: "1.25rem" }}
+          >
+            {listProyek.map((p) => (
+              <div key={p.id} className="card" style={{ overflow: "hidden", borderLeft: "3px solid #276EF1" }}>
+                <div
+                  onClick={() => setActive({ src: p.gambar, alt: p.nama, link: p.link })}
+                  style={{ cursor: "zoom-in" }}
+                >
+                  <img
+                    src={p.gambar}
+                    alt={p.nama}
+                    loading="lazy"
+                    style={{
+                      display: "block",
+                      width: "100%",
+                      height: "200px",
+                      objectFit: "cover",
+                    }}
+                  />
+                </div>
+                <div style={{ padding: "1.1rem 1.2rem 1.2rem" }}>
+                  <h3 className="heading-sm" style={{ marginBottom: "0.35rem" }}>{p.nama}</h3>
+                  <p style={{ fontSize: "0.8rem", color: "#64748b", lineHeight: 1.65, marginBottom: "0.85rem" }}>
+                    {p.desk}
+                  </p>
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem", marginBottom: "1rem" }}>
+                    {p.tools.map((t) => <span key={t} className="tag">{t}</span>)}
+                  </div>
                   <a
-                    href={proyek.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="bg-white text-accent font-semibold px-4 py-2 rounded-lg text-sm hover:bg-blue-50 transition-colors flex items-center gap-1.5"
-                    onClick={(e) => e.stopPropagation()}
+                    href={p.link} target="_blank" rel="noopener noreferrer"
+                    className="btn btn-outline"
+                    style={{ width: "100%", justifyContent: "center", fontSize: "0.8rem" }}
                   >
-                    <i className="ri-external-link-line"></i>
-                    Lihat Proyek
+                    <i className="ri-github-line"></i> Lihat Repository
                   </a>
                 </div>
               </div>
-
-              {/* Project Info */}
-              <div className="p-4">
-                <h3 className="font-bold text-navy text-base mb-1.5 group-hover:text-accent transition-colors">
-                  {proyek.nama}
-                </h3>
-                <p className="text-xs text-slate-500 leading-relaxed mb-3">
-                  {proyek.desk}
-                </p>
-
-                {/* Tech Stack */}
-                <div className="flex flex-wrap gap-1.5 mb-4">
-                  {proyek.tools.map((tool, index) => (
-                    <span key={index} className="badge">{tool}</span>
-                  ))}
-                </div>
-
-                {/* View Button */}
-                <a
-                  href={proyek.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-outline w-full justify-center text-xs py-2"
-                >
-                  <i className="ri-github-line"></i>
-                  Lihat Repository
-                </a>
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
-    </section>
-  );
-};
 
-export default Projects;
+        <style>{`
+          @media (min-width: 640px)  { .projects-grid { grid-template-columns: repeat(2,1fr) !important; } }
+          @media (min-width: 1024px) { .projects-grid { grid-template-columns: repeat(3,1fr) !important; } }
+        `}</style>
+      </section>
+    </>
+  );
+}
