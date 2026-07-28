@@ -50,10 +50,10 @@ export default function Navbar() {
                 {l.label}
               </a>
             ))}
-            <a href="https://bit.ly/4fsgT26" target="_blank" rel="noopener noreferrer"
+            {/* <a href="https://bit.ly/4fsgT26" target="_blank" rel="noopener noreferrer"
               className="btn btn-primary" style={{ marginLeft:"0.5rem", padding:"0.45rem 1.1rem", fontSize:"0.82rem" }}>
               Download CV
-            </a>
+            </a> */}
           </div>
 
           {/* Mobile hamburger */}

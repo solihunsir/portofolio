@@ -12,10 +12,8 @@ const PreLoader = () => {
       <div className="w-screen h-screen fixed flex flex-col items-center justify-center bg-white z-50">
         {/* Logo */}
         <div className="flex items-center gap-2 mb-8">
-          <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center">
-            <span className="text-white font-bold">S</span>
-          </div>
-          <span className="text-xl font-bold text-navy">Sholihun<span className="text-blue-600">.</span></span>
+          
+          <span className="text-xl font-bold text-navy">Portofolio Sholihun<span className="text-blue-600">.</span></span>
         </div>
 
         {/* Spinner */}

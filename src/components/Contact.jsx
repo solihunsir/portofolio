@@ -3,7 +3,7 @@ export default function Contact() {
     { icon:"ri-mail-line",      label:"Email",     val:"solihun.bks2019@gmail.com",      href:null },
     { icon:"ri-github-line",    label:"GitHub",    val:"github.com/solihunsir",           href:"https://github.com/solihunsir" },
     { icon:"ri-linkedin-line",  label:"LinkedIn",  val:"linkedin.com/in/m-sholihun",      href:"https://www.linkedin.com/in/m-sholihun" },
-    { icon:"ri-instagram-line", label:"Instagram", val:"@solihunsir",                     href:"https://www.instagram.com/solihunsir" },
+    { icon:"ri-instagram-line", label:"Instagram", val:"@sholihunnn",                     href:"https://www.instagram.com/sholihunnn" },
   ];
 
   return (

@@ -121,13 +121,11 @@ export default function Projects() {
               <i className="ri-code-box-line"></i> Portfolio
             </span>
             <h2 className="heading-lg">
-              Proyek <span className="text-blue">Saya</span>
+              Proyek 
             </h2>
             <p className="text-body" style={{ maxWidth: 380, margin: "0.5rem auto 0" }}>
               Berikut beberapa proyek yang telah saya kerjakan.{" "}
-              <span style={{ color: "#276EF1", fontWeight: 600 }}>
-                Klik gambar untuk memperbesar.
-              </span>
+
             </p>
           </div>
 

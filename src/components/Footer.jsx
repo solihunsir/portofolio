@@ -21,11 +21,7 @@ export default function Footer() {
           {/* Brand */}
           <div>
             <div style={{ display:"flex", alignItems:"center", gap:"0.5rem", marginBottom:"0.75rem" }}>
-              <span style={{
-                width:30, height:30, background:"#276EF1",
-                borderRadius:8, display:"flex", alignItems:"center", justifyContent:"center",
-                color:"#fff", fontWeight:800, fontSize:"0.8rem", flexShrink:0,
-              }}>S</span>
+              
               <span style={{ fontWeight:800, fontSize:"1rem", color:"#fff" }}>
                 Sholihun<span style={{ color:"#60a5fa" }}>.</span>
               </span>
@@ -87,12 +83,7 @@ export default function Footer() {
                 <i className="ri-map-pin-line" style={{ color:"#60a5fa", flexShrink:0 }}></i>
                 Bengkalis, Riau, Indonesia
               </li>
-              <li style={{ marginTop:"0.5rem" }}>
-                <a href="https://bit.ly/4fsgT26" target="_blank" rel="noopener noreferrer"
-                  className="btn btn-primary" style={{ fontSize:"0.78rem", padding:"0.45rem 1rem" }}>
-                  <i className="ri-download-line"></i> Download CV
-                </a>
-              </li>
+              
             </ul>
           </div>
         </div>
@@ -103,8 +94,8 @@ export default function Footer() {
           marginTop:"2.5rem", paddingTop:"1.5rem",
           display:"flex", flexWrap:"wrap", justifyContent:"space-between", gap:"0.5rem",
         }}>
-          <p style={{ fontSize:"0.75rem", color:"#475569" }}>© {year} M. Sholihun. All rights reserved.</p>
-          <p style={{ fontSize:"0.75rem", color:"#475569" }}>Made with <span style={{ color:"#f87171" }}>❤</span> using React &amp; Vite</p>
+          <p style={{ fontSize:"0.75rem", color:"#475569" }}>© {year} M. Sholihun</p>
+          
         </div>
       </div>
 

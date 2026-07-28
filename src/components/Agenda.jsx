@@ -100,9 +100,7 @@ export default function Agenda() {
             </h2>
             <p className="text-body" style={{ maxWidth: 420, margin: "0.5rem auto 0" }}>
               Beberapa agenda dan pencapaian selama masa perkuliahan.{" "}
-              <span style={{ color: "#276EF1", fontWeight: 600 }}>
-                Klik gambar untuk memperbesar.
-              </span>
+
             </p>
           </div>
 

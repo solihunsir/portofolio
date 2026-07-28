@@ -10,7 +10,7 @@ export default function Skills() {
             <i className="ri-tools-line"></i> Tech Stack
           </span>
           <h2 className="heading-lg">
-            Tools yang <span className="text-blue">Saya Pakai</span>
+            Tools 
           </h2>
           <p className="text-body" style={{ maxWidth:420, margin:"0.5rem auto 0" }}>
             Teknologi dan tools yang biasa saya gunakan untuk membangun Website maupun Mobile App.
