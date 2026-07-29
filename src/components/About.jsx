@@ -62,13 +62,13 @@ export default function About() {
             </h2>
             <div className="accent-line" />
             <p className="text-body" style={{ marginBottom:"0.85rem" }}>
-              Saya adalah Fresh Graduate Jurusan Teknik Informatika di Politeknik Negeri Bengkalis
-              dengan minat besar dalam pengembangan aplikasi mobile dan web.
+              Saya merupakan pengembang perangkat lunak yang berdedikasi tinggi dengan rekam jejak dalam merancang 
+              aplikasi berbasis web dan mobile yang tangguh. Melalui pengalaman kepemimpinan, kompetisi teknologi, dan sertifikasi lengkap di bidang Front-End & Back-End Development, saya berfokus menciptakan solusi perangkat lunak yang terintegrasi, efisien, dan siap pakai untuk industri maupun sektor publik.
             </p>
-            <p className="text-body" style={{ marginBottom:"1.75rem" }}>
+            {/* <p className="text-body" style={{ marginBottom:"1.75rem" }}>
               Berpengalaman dalam organisasi, kepanitiaan, dan kompetisi teknologi. Tersertifikasi
               Front-End &amp; Back-End Developer serta Pemrograman Kotlin dari Dicoding.
-            </p>
+            </p> */}
 
             {/* Stats grid */}
             <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"0.75rem" }}>

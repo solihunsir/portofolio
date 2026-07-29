@@ -30,9 +30,8 @@ export default function Hero() {
            
 
             <p className="text-body" style={{ maxWidth: 440, marginBottom: "1.75rem" }}>
-              Fresh Graduate Teknik Informatika di Politeknik Negeri Bengkalis.
-              Berpengalaman dalam pengembangan aplikasi mobile &amp; web, serta aktif di
-              organisasi, kompetisi, dan Coding Camp DBS Foundation 2025.
+              Lulusan Teknik Informatika Politeknik Negeri Bengkalis dengan spesialisasi pengembangan aplikasi web dan mobile. 
+              Memiliki pengalaman kerja praktik di PT Citiasia Internasional, lulusan Coding Camp DBS Foundation 2025, serta aktif dalam organisasi dan kompetisi teknologi.
             </p>
 
             {/* Buttons */}

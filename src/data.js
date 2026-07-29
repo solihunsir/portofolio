@@ -64,6 +64,15 @@ export const listProyek = [
     dad: "500",
     link: "https://github.com/solihunsir/private-chess-ai",
   },
+  {
+    id: 6,
+    gambar: "/assets/proyek/proyek6.png",
+    nama: "Smart Village Ecosystem",
+    desk: "Platform ekosistem desa cerdas yang dirancang untuk pengintegrasian laporan desa, marketplace produk lokal/desa, serta wadah interaksi komunitas desa.",
+    tools: [],
+    dad: "600",
+    link: "",
+  },
 ];
 
 export const listAgenda = [
@@ -121,6 +130,13 @@ export const listAgenda = [
     gambar: "/assets/agenda/agenda8.png",
     nama: "Sertifikat Web Intermediate",
     desk: "Sertifikat yang didapatkan dari Dicoding dengan kelas Web Intermediate",
+    dad: "200",
+  },
+  {
+    id: 9,
+    gambar: "/assets/agenda/agenda9.png",
+    nama: "Sertifikat Magang Berdampak",
+    desk: "Sertifikat Magang Berdampak di PT Citiasia Internasional.",
     dad: "200",
   },
 ];
