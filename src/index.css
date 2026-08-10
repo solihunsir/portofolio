@@ -374,3 +374,15 @@ img { max-width: 100%; display: block; }
   margin-bottom: 0.4rem;
   font-family: 'Manrope', sans-serif;
 }
+
+/* ═══════════════════════════════════════════
+   ANIMATED FLUID MESH GRADIENT
+═══════════════════════════════════════════ */
+@keyframes fluid-blob {
+  0%   { transform: translate(0px, 0px)    scale(1);   }
+  33%  { transform: translate(30px, -50px) scale(1.1); }
+  66%  { transform: translate(-20px, 20px) scale(0.9); }
+  100% { transform: translate(0px, 0px)    scale(1);   }
+}
+.animate-fluid-1 { animation: fluid-blob 14s infinite ease-in-out; }
+.animate-fluid-2 { animation: fluid-blob 18s infinite ease-in-out reverse; }

@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@google/genai": "^2.16.0",
+    "@google/generative-ai": "^0.24.1",
     "@splinetool/react-spline": "^4.0.0",
     "@tailwindcss/vite": "^4.1.11",
     "animate.css": "^4.1.1",
