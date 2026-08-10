@@ -36,8 +36,10 @@ img { max-width: 100%; display: block; }
 @media (min-width: 640px)  { .container { padding: 0 1.5rem; } }
 @media (min-width: 1024px) { .container { padding: 0 2rem; } }
 
-.section { padding: 5rem 0; }
+/* Ensure all main sections sit above the background ToolsAnimation layer (z-index:1) */
+.section { padding: 5rem 0; position: relative; z-index: 10; }
 @media (min-width: 768px)  { .section { padding: 6.5rem 0; } }
+
 
 /* ═══════════════════════════════════════════
    COLORS / THEME

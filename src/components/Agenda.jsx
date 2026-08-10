@@ -3,9 +3,6 @@ import { listAgenda } from "../data";
 
 // Komponen overlay mandiri - render ke luar semua container
 function Overlay({ src, alt, onClose }) {
-  const overlayRef = useRef(null);
-
-  // Inject elemen langsung ke <html> agar bebas dari semua stacking context
   useEffect(() => {
     const el = document.createElement("div");
     el.id = "agenda-lightbox-root";
@@ -24,7 +21,6 @@ function Overlay({ src, alt, onClose }) {
     });
     el.onclick = (e) => { if (e.target === el) onClose(); };
 
-    // Close button
     const btn = document.createElement("button");
     btn.textContent = "✕";
     Object.assign(btn.style, {
@@ -46,7 +42,6 @@ function Overlay({ src, alt, onClose }) {
     });
     btn.onclick = onClose;
 
-    // Image
     const img = document.createElement("img");
     img.src = src;
     img.alt = alt;
@@ -63,7 +58,6 @@ function Overlay({ src, alt, onClose }) {
     el.appendChild(btn);
     document.documentElement.appendChild(el);
 
-    // Escape key
     const onKey = (e) => { if (e.key === "Escape") onClose(); };
     window.addEventListener("keydown", onKey);
 
@@ -77,7 +71,135 @@ function Overlay({ src, alt, onClose }) {
 }
 
 export default function Agenda() {
-  const [active, setActive] = useState(null);
+  const [active,   setActive]   = useState(null);
+  const [atStart,  setAtStart]  = useState(true);   // scroll posisi paling kiri
+  const [atEnd,    setAtEnd]    = useState(false);   // scroll posisi paling kanan
+  const [dotIndex, setDotIndex] = useState(0);       // kolom aktif untuk dot indicator
+
+  const sectionRef = useRef(null);
+  const trackRef   = useRef(null);
+  const colWRef    = useRef(0);
+  const autoRef    = useRef(null);
+  const idleRef    = useRef(null);
+  const hoveredRef = useRef(false);
+  const inViewRef  = useRef(false);
+
+  /* ── Total kolom dengan layout 2 baris ── */
+  const TOTAL_COLS = Math.ceil(listAgenda.length / 2);
+
+  /* ── Hitung batas scroll & update state ── */
+  const updateBounds = () => {
+    const track = trackRef.current;
+    if (!track) return;
+    const maxScroll = track.scrollWidth - track.clientWidth;
+    const sl = track.scrollLeft;
+
+    setAtStart(sl <= 4);
+    setAtEnd(sl >= maxScroll - 4);
+
+    // Dot indicator: kolom berapa yang sedang ditampilkan di tengah
+    const cw = colWRef.current;
+    if (cw > 0) {
+      const col = Math.round(sl / cw);
+      setDotIndex(Math.min(col, TOTAL_COLS - 1));
+    }
+  };
+
+  /* ── Ukur lebar kolom ── */
+  const measureCol = () => {
+    const track = trackRef.current;
+    if (!track) return;
+    const card = track.querySelector(".ac-card");
+    if (!card) return;
+    const gap = parseFloat(getComputedStyle(track).gap) || 16;
+    colWRef.current = card.getBoundingClientRect().width + gap;
+    updateBounds();
+  };
+
+  useEffect(() => {
+    const tid = setTimeout(measureCol, 150);
+    window.addEventListener("resize", measureCol);
+    return () => { clearTimeout(tid); window.removeEventListener("resize", measureCol); };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  /* ── Auto-scroll helpers ── */
+  const stopAuto = () => {
+    clearInterval(autoRef.current);
+    autoRef.current = null;
+  };
+
+  const startAuto = () => {
+    if (autoRef.current) return;
+    autoRef.current = setInterval(() => {
+      const track = trackRef.current;
+      if (!track || hoveredRef.current) return;
+
+      const maxScroll = track.scrollWidth - track.clientWidth;
+      if (track.scrollLeft >= maxScroll - 2) {
+        // Sudah di ujung → hentikan auto-scroll, tidak loop kembali
+        stopAuto();
+        return;
+      }
+      track.scrollLeft += 1;
+    }, 25);
+  };
+
+  const scheduleAuto = () => {
+    clearTimeout(idleRef.current);
+    idleRef.current = setTimeout(() => {
+      if (inViewRef.current && !hoveredRef.current) {
+        // Jangan mulai auto-scroll jika sudah di akhir
+        const track = trackRef.current;
+        if (!track) return;
+        const maxScroll = track.scrollWidth - track.clientWidth;
+        if (track.scrollLeft < maxScroll - 2) startAuto();
+      }
+    }, 1000);
+  };
+
+  /* ── IntersectionObserver ── */
+  useEffect(() => {
+    const obs = new IntersectionObserver(([entry]) => {
+      inViewRef.current = entry.isIntersecting;
+      if (entry.isIntersecting) {
+        scheduleAuto();
+      } else {
+        stopAuto();
+        clearTimeout(idleRef.current);
+      }
+    }, { threshold: 0.25 });
+
+    if (sectionRef.current) obs.observe(sectionRef.current);
+    return () => {
+      obs.disconnect();
+      stopAuto();
+      clearTimeout(idleRef.current);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  /* ── Mouse / Touch handlers ── */
+  const onEnter = () => {
+    hoveredRef.current = true;
+    stopAuto();
+    clearTimeout(idleRef.current);
+  };
+  const onLeave = () => {
+    hoveredRef.current = false;
+    scheduleAuto();
+  };
+
+  /* ── Prev / Next navigation ── */
+  const scrollStep = (dir) => {
+    if (!trackRef.current || !colWRef.current) return;
+    trackRef.current.scrollBy({
+      left: dir * colWRef.current * 3,
+      behavior: "smooth",
+    });
+    stopAuto();
+    scheduleAuto();
+  };
 
   return (
     <>
@@ -89,63 +211,231 @@ export default function Agenda() {
         />
       )}
 
-      <section className="section sec-b" id="agenda">
+      <section ref={sectionRef} className="section sec-b" id="agenda">
         <div className="container">
+
+          {/* ── Section header ── */}
           <div style={{ textAlign: "center", marginBottom: "2.75rem" }}>
             <span className="section-badge">
-              <i className="ri-trophy-line"></i> Pencapaian
+              <i className="ri-trophy-line" /> Pencapaian
             </span>
             <h2 className="heading-lg">
               Agenda &amp; <span className="text-blue">Pencapaian</span>
             </h2>
             <p className="text-body" style={{ maxWidth: 420, margin: "0.5rem auto 0" }}>
-              Beberapa agenda dan pencapaian selama masa perkuliahan.{" "}
-
+              Beberapa agenda dan pencapaian selama masa perkuliahan.
             </p>
           </div>
 
-          <div
-            className="agenda-grid"
-            style={{ display: "grid", gridTemplateColumns: "repeat(2,1fr)", gap: "1rem" }}
-          >
-            {listAgenda.map((a) => (
-              <div
-                key={a.id}
-                className="card"
-                style={{ overflow: "hidden", cursor: "pointer" }}
-                onClick={() => setActive({ src: a.gambar, alt: a.nama })}
-              >
-                <img
-                  src={a.gambar}
-                  alt={a.nama}
-                  loading="lazy"
-                  style={{
-                    display: "block",
-                    width: "100%",
-                    height: "180px",
-                    objectFit: "cover",
-                  }}
-                />
-                <div style={{ padding: "0.7rem 0.85rem 0.85rem" }}>
-                  <p style={{ fontSize: "0.78rem", fontWeight: 700, color: "#041E42", margin: "0 0 0.2rem" }}>
-                    {a.nama}
-                  </p>
-                  <p style={{
-                    fontSize: "0.67rem", color: "#64748b", lineHeight: 1.5, margin: 0,
-                    overflow: "hidden", display: "-webkit-box",
-                    WebkitLineClamp: 2, WebkitBoxOrient: "vertical",
-                  }}>
-                    {a.desk}
-                  </p>
+          {/* ── Carousel shell ── */}
+          <div className="ac-shell">
+
+            {/* Tombol Prev — memudar & disabled di awal */}
+            <button
+              className={`ac-nav-btn ac-prev${atStart ? " ac-btn-hidden" : ""}`}
+              onClick={() => scrollStep(-1)}
+              disabled={atStart}
+              aria-label="Sebelumnya"
+            >
+              <i className="ri-arrow-left-s-line" />
+            </button>
+
+            {/* Tombol Next — memudar & disabled di akhir */}
+            <button
+              className={`ac-nav-btn ac-next${atEnd ? " ac-btn-hidden" : ""}`}
+              onClick={() => scrollStep(1)}
+              disabled={atEnd}
+              aria-label="Berikutnya"
+            >
+              <i className="ri-arrow-right-s-line" />
+            </button>
+
+            {/* Fade-edge overlay kiri (sembunyikan saat di awal) */}
+            {!atStart && <div className="ac-fade ac-fade-l" aria-hidden="true" />}
+            {/* Fade-edge overlay kanan (sembunyikan saat di akhir) */}
+            {!atEnd   && <div className="ac-fade ac-fade-r" aria-hidden="true" />}
+
+            {/* ── Scrollable dual-row track ── */}
+            <div
+              ref={trackRef}
+              className="ac-track"
+              onScroll={updateBounds}
+              onMouseEnter={onEnter}
+              onMouseLeave={onLeave}
+              onTouchStart={onEnter}
+              onTouchEnd={onLeave}
+            >
+              {listAgenda.map((a, idx) => (
+                <div
+                  key={a.id}
+                  className="card ac-card"
+                  onClick={() => setActive({ src: a.gambar, alt: a.nama })}
+                  style={{ overflow: "hidden", cursor: "pointer" }}
+                >
+                  <img
+                    src={a.gambar}
+                    alt={a.nama}
+                    loading="lazy"
+                    draggable="false"
+                    style={{
+                      display: "block",
+                      width: "100%",
+                      height: "148px",
+                      objectFit: "cover",
+                      pointerEvents: "none",
+                    }}
+                  />
+                  <div style={{ padding: "0.65rem 0.82rem 0.82rem" }}>
+                    <p style={{
+                      fontSize: "0.74rem", fontWeight: 700,
+                      color: "#041E42", margin: "0 0 0.2rem",
+                      whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
+                    }}>
+                      {a.nama}
+                    </p>
+                    <p style={{
+                      fontSize: "0.64rem", color: "#64748b",
+                      lineHeight: 1.55, margin: 0,
+                      overflow: "hidden", display: "-webkit-box",
+                      WebkitLineClamp: 2, WebkitBoxOrient: "vertical",
+                    }}>
+                      {a.desk}
+                    </p>
+                  </div>
                 </div>
-              </div>
+              ))}
+            </div>
+          </div>
+
+          {/* ── Dot indicators — aktif mengikuti posisi scroll ── */}
+          <div style={{ display: "flex", justifyContent: "center", gap: "0.45rem", marginTop: "1.4rem" }}>
+            {Array.from({ length: TOTAL_COLS }).map((_, i) => (
+              <button
+                key={i}
+                className={`ac-dot${i === dotIndex ? " ac-dot-active" : ""}`}
+                aria-label={`Pergi ke kolom ${i + 1}`}
+                onClick={() => {
+                  if (!trackRef.current || !colWRef.current) return;
+                  trackRef.current.scrollTo({
+                    left: i * colWRef.current,
+                    behavior: "smooth",
+                  });
+                  stopAuto();
+                  scheduleAuto();
+                }}
+              />
             ))}
           </div>
+
         </div>
 
+        {/* ── Component-scoped styles ── */}
         <style>{`
-          @media (min-width: 640px)  { .agenda-grid { grid-template-columns: repeat(3,1fr) !important; } }
-          @media (min-width: 1024px) { .agenda-grid { grid-template-columns: repeat(4,1fr) !important; } }
+          .ac-shell {
+            position: relative;
+          }
+
+          /* ── Scrollable dual-row grid track ── */
+          .ac-track {
+            display: grid;
+            grid-template-rows: repeat(2, auto);
+            grid-auto-flow: column;
+            grid-auto-columns: calc(33.333% - 0.677rem);
+            gap: 1rem;
+            overflow-x: scroll;
+            overflow-y: hidden;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            -webkit-overflow-scrolling: touch;
+            cursor: grab;
+            user-select: none;
+            padding: 0.25rem 0.125rem 0.5rem;
+          }
+          .ac-track::-webkit-scrollbar { display: none; }
+          .ac-track:active { cursor: grabbing; }
+
+          /* ── Navigation buttons ── */
+          .ac-nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 15;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            border: 1.5px solid rgba(39,110,241,0.22);
+            background: rgba(255,255,255,0.88);
+            backdrop-filter: blur(10px);
+            color: #276EF1;
+            font-size: 1.35rem;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s, transform 0.2s,
+                        box-shadow 0.2s, opacity 0.3s;
+            box-shadow: 0 2px 14px rgba(39,110,241,0.13);
+          }
+          .ac-nav-btn:hover:not(:disabled) {
+            background: #276EF1;
+            color: #fff;
+            transform: translateY(-50%) scale(1.1);
+            box-shadow: 0 4px 18px rgba(39,110,241,0.3);
+          }
+          /* Tombol memudar & tidak bisa diklik saat di batas */
+          .ac-btn-hidden {
+            opacity: 0;
+            pointer-events: none;
+          }
+          .ac-prev { left: 6px; }
+          .ac-next { right: 6px; }
+
+          /* ── Fade-edge overlays ── */
+          .ac-fade {
+            position: absolute;
+            top: 0; bottom: 0;
+            width: 72px;
+            pointer-events: none;
+            z-index: 10;
+          }
+          .ac-fade-l {
+            left: 0;
+            background: linear-gradient(to right, rgba(220,232,252,0.85), transparent);
+          }
+          .ac-fade-r {
+            right: 0;
+            background: linear-gradient(to left, rgba(220,232,252,0.85), transparent);
+          }
+
+          /* ── Dot indicator ── */
+          .ac-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(39,110,241,0.2);
+            cursor: pointer;
+            padding: 0;
+            transition: background 0.3s, transform 0.25s, width 0.25s;
+          }
+          .ac-dot:hover { background: rgba(39,110,241,0.45); }
+          .ac-dot-active {
+            background: #276EF1;
+            width: 20px;
+            border-radius: 4px;
+            transform: scaleY(1.1);
+          }
+
+          /* ── Responsive ── */
+          @media (max-width: 767px) {
+            .ac-track { grid-auto-columns: calc(50% - 0.5rem); }
+            .ac-nav-btn { width: 32px; height: 32px; font-size: 1.1rem; }
+          }
+          @media (max-width: 479px) {
+            .ac-track { grid-auto-columns: calc(78% - 0.4rem); gap: 0.75rem; }
+            .ac-fade { width: 40px; }
+          }
         `}</style>
       </section>
     </>
