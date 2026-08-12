@@ -107,7 +107,7 @@ export default function Hero() {
 
           {/* Tombol aksi */}
           <div style={{ display: "flex", flexWrap: "wrap", gap: "0.75rem", marginBottom: "0.5rem", justifyContent: "center" }}>
-            <a href={CV} target="_blank" rel="noopener noreferrer" className="btn btn-primary">
+            <a href="https://bit.ly/45UU7eK" target="_blank" rel="noopener noreferrer" className="btn btn-primary">
               <i className="ri-download-line" /> Download CV
             </a>
             <a href="#proyek" className="btn btn-outline">
