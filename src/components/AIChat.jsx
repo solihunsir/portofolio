@@ -2,15 +2,23 @@ import { useState, useRef, useEffect } from 'react';
 import { profileData } from '../data/profileData';
 
 /* ─────────────────────────────────────────────────────────────
-   Groq API — llama-3.3-70b-versatile
-   · TPM lebih besar dari llama-3.1-8b-instant
+   Groq API — Model dikonfigurasi via env var VITE_GROQ_MODEL_NAME
+   · Default fallback: openai/gpt-oss-20b
+     (non-thinking, fast chat model aktif di Groq per Agustus 2026)
    · max_tokens: 300 — jawaban ringkas, hemat kuota
    · Hanya kirim 1 pesan user (tanpa history) — cegah overflow
    · API HANYA dipanggil saat tombol "Kirim" diklik
 ───────────────────────────────────────────────────────────── */
 
 const GROQ_ENDPOINT = 'https://api.groq.com/openai/v1/chat/completions';
-const GROQ_MODEL    = 'llama-3.3-70b-versatile';
+const GROQ_MODEL    = import.meta.env.VITE_GROQ_MODEL_NAME || 'openai/gpt-oss-20b';
+
+/** Buang blok <think>...</think> — termasuk blok yang tidak ditutup (unclosed) */
+const stripThinkingBlock = (text) =>
+  text
+    .replace(/<think>[\s\S]*?<\/think>/gi, '') // closed block
+    .replace(/<think>[\s\S]*/gi, '')            // unclosed block (token truncated)
+    .trim();
 
 const SYSTEM_CONTENT = `Kamu adalah Asisten AI pribadi portofolio Muhammad Sholihun. Jawab pertanyaan pengunjung secara ramah, profesional, jujur, padat, dan ringkas (maksimal 2-3 kalimat pendek) berdasarkan data berikut:\n\n${profileData}`;
 
@@ -79,12 +87,11 @@ export default function AIChat() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data?.error?.message || `HTTP ${response.status}`);
+        throw new Error(`HTTP ${response.status}: ${data?.error?.message || JSON.stringify(data?.error) || 'Unknown error'}`);
       }
 
-      const replyText =
-        data?.choices?.[0]?.message?.content ||
-        'Maaf, tidak ada jawaban dari AI.';
+      const rawReply = data?.choices?.[0]?.message?.content || '';
+      const replyText = stripThinkingBlock(rawReply) || 'Maaf, tidak ada jawaban dari AI.';
 
       setMessages(prev => [...prev, { sender: 'ai', text: replyText }]);
 
