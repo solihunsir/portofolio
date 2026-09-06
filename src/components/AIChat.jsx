@@ -38,11 +38,16 @@ export default function AIChat() {
     },
   ]);
   const [loading, setLoading]   = useState(false);
-  const messagesEndRef          = useRef(null);
+  const scrollContainerRef      = useRef(null);
 
-  /* Auto-scroll ke pesan terbaru */
+  /* Auto-scroll ke pesan terbaru tanpa menggeser halaman utama */
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTo({
+        top: scrollContainerRef.current.scrollHeight,
+        behavior: 'smooth'
+      });
+    }
   }, [messages, loading]);
 
   /* ── Handler utama — satu pertanyaan = satu request bersih ── */
@@ -203,7 +208,7 @@ export default function AIChat() {
         }}>
 
           {/* Messages */}
-          <div className="aichat-scroll" style={{
+          <div className="aichat-scroll" ref={scrollContainerRef} style={{
             height: 320, overflowY: 'auto',
             padding: '1.25rem', display: 'flex', flexDirection: 'column', gap: '0.75rem',
           }}>
@@ -215,32 +220,21 @@ export default function AIChat() {
                   alignItems: 'flex-start',
                 }}
               >
-                {/* AI Avatar */}
-                {msg.sender === 'ai' && (
-                  <div style={{
-                    width: 28, height: 28, borderRadius: '50%',
-                    background: 'linear-gradient(135deg,#0ea5e9,#38bdf8)',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    flexShrink: 0, marginRight: '0.6rem', marginTop: 2,
-                    boxShadow: '0 2px 8px rgba(56,189,248,0.4)',
-                  }}>
-                    <i className="ri-sparkling-2-fill" style={{ color: '#fff', fontSize: '0.68rem' }} />
-                  </div>
-                )}
+                {/* AI Avatar Dihapus */}
 
                 {/* Bubble */}
                 <div style={{
                   maxWidth: '82%', padding: '0.75rem 1rem',
                   borderRadius: msg.sender === 'user' ? '14px 3px 14px 14px' : '3px 14px 14px 14px',
                   background: msg.sender === 'user'
-                    ? 'linear-gradient(135deg,#0284c7,#0369a1)'
+                    ? '#276EF1'
                     : 'rgba(30,41,59,0.9)',
                   color: msg.sender === 'user' ? '#fff' : 'rgba(226,232,240,0.95)',
                   fontSize: '0.855rem', lineHeight: 1.72,
                   fontFamily: "'Quicksand', sans-serif", fontWeight: 500,
                   whiteSpace: 'pre-wrap', wordBreak: 'break-word',
                   border: msg.sender === 'ai' ? '1px solid rgba(51,65,85,0.7)' : 'none',
-                  boxShadow: msg.sender === 'user' ? '0 4px 14px rgba(2,132,199,0.32)' : 'none',
+                  boxShadow: msg.sender === 'user' ? '0 4px 14px rgba(39,110,241,0.32)' : 'none',
                 }}>
                   {msg.text}
                 </div>
@@ -264,14 +258,6 @@ export default function AIChat() {
             {loading && (
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
                 <div style={{
-                  width: 28, height: 28, borderRadius: '50%',
-                  background: 'linear-gradient(135deg,#0ea5e9,#38bdf8)',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  flexShrink: 0, boxShadow: '0 2px 8px rgba(56,189,248,0.4)',
-                }}>
-                  <i className="ri-sparkling-2-fill" style={{ color: '#fff', fontSize: '0.68rem' }} />
-                </div>
-                <div style={{
                   padding: '0.65rem 1rem', borderRadius: '3px 14px 14px 14px',
                   background: 'rgba(30,41,59,0.9)', border: '1px solid rgba(51,65,85,0.7)',
                   display: 'flex', alignItems: 'center', gap: 5,
@@ -289,8 +275,6 @@ export default function AIChat() {
                 </span>
               </div>
             )}
-
-            <div ref={messagesEndRef} />
           </div>
 
           {/* Hint chips */}
@@ -335,11 +319,11 @@ export default function AIChat() {
               disabled={loading || !query.trim()}
               style={{
                 padding: '0.75rem 1.5rem',
-                background: 'linear-gradient(135deg,#0ea5e9,#0284c7)', color: '#fff',
+                background: '#276EF1', color: '#fff',
                 border: 'none', borderRadius: 12,
                 fontSize: '0.855rem', fontWeight: 700, fontFamily: "'Manrope',sans-serif",
                 cursor: 'pointer', transition: 'all 0.2s', whiteSpace: 'nowrap',
-                boxShadow: '0 4px 14px rgba(56,189,248,0.3)',
+                boxShadow: '0 4px 14px rgba(39,110,241,0.3)',
               }}
             >
               {loading

@@ -83,6 +83,7 @@ export default function Agenda() {
   const idleRef    = useRef(null);
   const hoveredRef = useRef(false);
   const inViewRef  = useRef(false);
+  const dirRef     = useRef(1);
 
   /* ── Total kolom dengan layout 2 baris ── */
   const TOTAL_COLS = Math.ceil(listAgenda.length / 2);
@@ -137,11 +138,11 @@ export default function Agenda() {
 
       const maxScroll = track.scrollWidth - track.clientWidth;
       if (track.scrollLeft >= maxScroll - 2) {
-        // Sudah di ujung → hentikan auto-scroll, tidak loop kembali
-        stopAuto();
-        return;
+        dirRef.current = -1;
+      } else if (track.scrollLeft <= 2) {
+        dirRef.current = 1;
       }
-      track.scrollLeft += 1;
+      track.scrollLeft += dirRef.current;
     }, 25);
   };
 
@@ -149,13 +150,12 @@ export default function Agenda() {
     clearTimeout(idleRef.current);
     idleRef.current = setTimeout(() => {
       if (inViewRef.current && !hoveredRef.current) {
-        // Jangan mulai auto-scroll jika sudah di akhir
         const track = trackRef.current;
         if (!track) return;
         const maxScroll = track.scrollWidth - track.clientWidth;
-        if (track.scrollLeft < maxScroll - 2) startAuto();
+        if (maxScroll > 0) startAuto();
       }
-    }, 1000);
+    }, 0);
   };
 
   /* ── IntersectionObserver ── */
@@ -197,6 +197,7 @@ export default function Agenda() {
       left: dir * colWRef.current * 3,
       behavior: "smooth",
     });
+    dirRef.current = dir;
     stopAuto();
     scheduleAuto();
   };
