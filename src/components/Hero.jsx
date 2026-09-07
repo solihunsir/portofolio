@@ -101,8 +101,7 @@ export default function Hero() {
 
           {/* Tagline singkat */}
           <p className="text-body" style={{ maxWidth: 480, marginBottom: "2rem", textAlign: "center" }}>
-            Fullstack Developer &amp; Fresh Graduate yang bersemangat membangun
-            solusi digital.
+            Software Engineer berfokus pada pengembangan solusi digital yang inovatif dan terstruktur
           </p>
 
           {/* Tombol aksi */}
