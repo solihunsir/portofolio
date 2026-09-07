@@ -10,6 +10,7 @@ import AIChat          from "./components/AIChat";
 import Footer          from "./components/Footer";
 import ScrollToTop     from "./components/ScrollToTop";
 import ToolsAnimation  from "./components/ToolsAnimation";
+import VoiceAssistant  from "./components/VoiceAssistant";
 
 function App() {
   /* Pastikan halaman selalu dimulai dari atas saat load/refresh */
@@ -32,6 +33,7 @@ function App() {
       <Footer />
       {/* Tombol scroll-to-top melayang */}
       <ScrollToTop />
+      <VoiceAssistant />
     </>
   );
 }

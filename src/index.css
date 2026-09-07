@@ -6,7 +6,7 @@
 ═══════════════════════════════════════════ */
 *, *::before, *::after { box-sizing: border-box; }
 
-html { scroll-behavior: smooth; overflow-x: hidden; }
+html { scroll-behavior: smooth; }
 
 body {
   font-family: 'Nunito', -apple-system, sans-serif;
@@ -16,6 +16,10 @@ body {
   background-color: #dce8fc;
   -webkit-font-smoothing: antialiased;
 }
+
+/* overflow-x hanya di #root agar position:fixed di portal (direct child of body)
+   TIDAK terpengaruh oleh scroll container. html dan body harus bersih. */
+#root { overflow-x: hidden; }
 
 img { max-width: 100%; display: block; }
 
