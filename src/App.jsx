@@ -1,40 +1,24 @@
-import { useEffect } from "react";
-import Navbar          from "./components/Navbar";
-import Hero            from "./components/Hero";
-import About           from "./components/About";
-import Skills          from "./components/Skills";
-import Projects        from "./components/Projects";
-import Agenda          from "./components/Agenda";
-import Contact         from "./components/Contact";
-import AIChat          from "./components/AIChat";
-import Footer          from "./components/Footer";
-import ScrollToTop     from "./components/ScrollToTop";
-import ToolsAnimation  from "./components/ToolsAnimation";
-import VoiceAssistant  from "./components/VoiceAssistant";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import PortfolioHome from "./pages/PortfolioHome";
+import AdminApp from "./admin/AdminApp";
+import { LanguageProvider } from "./context/LanguageContext";
 
 function App() {
-  /* Pastikan halaman selalu dimulai dari atas saat load/refresh */
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
   return (
-    <>
-      {/* ── Animated tool icons – background layer (z-index:1) ── */}
-      <ToolsAnimation />
-      <Navbar />
-      <Hero />
-      <About />
-      <Skills />
-      <Projects />
-      <Agenda />
-      <Contact />
-      <AIChat />
-      <Footer />
-      {/* Tombol scroll-to-top melayang */}
-      <ScrollToTop />
-      <VoiceAssistant />
-    </>
+    <LanguageProvider>
+      <BrowserRouter>
+        <Routes>
+          {/* Public Portfolio Route */}
+          <Route path="/" element={<PortfolioHome />} />
+
+          {/* Secret Admin Dashboard Route (Hidden URL without login form) */}
+          <Route path="/x-admin-7f3a9b/*" element={<AdminApp />} />
+
+          {/* Fallback to Home */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </BrowserRouter>
+    </LanguageProvider>
   );
 }
 

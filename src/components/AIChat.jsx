@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { profileData } from '../data/profileData';
+import { useLanguage } from '../context/LanguageContext';
 
 /* ─────────────────────────────────────────────────────────────
    Groq API — Model dikonfigurasi via env var VITE_GROQ_MODEL_NAME
@@ -20,25 +21,22 @@ const stripThinkingBlock = (text) =>
     .replace(/<think>[\s\S]*/gi, '')            // unclosed block (token truncated)
     .trim();
 
-const SYSTEM_CONTENT = `Kamu adalah Asisten AI pribadi portofolio Muhammad Sholihun. Jawab pertanyaan pengunjung secara ramah, profesional, jujur, padat, dan ringkas (maksimal 2-3 kalimat pendek) berdasarkan data berikut:\n\n${profileData}`;
-
-const HINTS = [
-  'Apa proyek machine learning-nya?',
-  'Bagaimana latar belakang Sholihun?',
-  'Keahlian teknis apa yang dikuasai?',
-  'Pengalaman kerja di mana saja?',
-];
-
 export default function AIChat() {
+  const { t, lang } = useLanguage();
   const [query, setQuery]       = useState('');
-  const [messages, setMessages] = useState([
-    {
-      sender: 'ai',
-      text: 'Halo! Saya Asisten AI Muhammad Sholihun. Silakan tanyakan apa saja seputar riwayat pendidikan, proyek, keahlian, atau pengalaman kerjanya!',
-    },
-  ]);
+  const [messages, setMessages] = useState([]);
   const [loading, setLoading]   = useState(false);
   const scrollContainerRef      = useRef(null);
+
+  // Update initial message when language changes if no conversation yet
+  useEffect(() => {
+    setMessages([
+      {
+        sender: 'ai',
+        text: t('aiChat.greeting'),
+      },
+    ]);
+  }, [lang]);
 
   /* Auto-scroll ke pesan terbaru tanpa menggeser halaman utama */
   useEffect(() => {
@@ -69,6 +67,10 @@ export default function AIChat() {
     setMessages(prev => [...prev, { sender: 'user', text: userText }]);
     setLoading(true);
 
+    const systemPrompt = lang === 'en'
+      ? `You are the personal AI Assistant for Muhammad Sholihun's portfolio. Answer visitor questions politely, professionally, honestly, and concisely in English (maximum 2-3 short sentences) based on the following portfolio data:\n\n${profileData}`
+      : `Kamu adalah Asisten AI pribadi portofolio Muhammad Sholihun. Jawab pertanyaan pengunjung secara ramah, profesional, jujur, padat, dan ringkas dalam Bahasa Indonesia (maksimal 2-3 kalimat pendek) berdasarkan data berikut:\n\n${profileData}`;
+
     try {
       const response = await fetch(GROQ_ENDPOINT, {
         method: 'POST',
@@ -80,7 +82,7 @@ export default function AIChat() {
           model: GROQ_MODEL,
           messages: [
             /* System prompt selalu di posisi pertama */
-            { role: 'system', content: SYSTEM_CONTENT },
+            { role: 'system', content: systemPrompt },
             /* Hanya kirim pertanyaan terbaru — cegah token overflow */
             { role: 'user', content: userText },
           ],
@@ -96,7 +98,7 @@ export default function AIChat() {
       }
 
       const rawReply = data?.choices?.[0]?.message?.content || '';
-      const replyText = stripThinkingBlock(rawReply) || 'Maaf, tidak ada jawaban dari AI.';
+      const replyText = stripThinkingBlock(rawReply) || (lang === 'en' ? 'Sorry, no answer from AI.' : 'Maaf, tidak ada jawaban dari AI.');
 
       setMessages(prev => [...prev, { sender: 'ai', text: replyText }]);
 
@@ -185,14 +187,14 @@ export default function AIChat() {
             padding: '0.3rem 0.85rem', borderRadius: 99, marginBottom: '0.85rem',
             fontFamily: "'Roboto Flex', sans-serif",
           }}>
-            <i className="" /> AI Assistant
+            <i className="" /> {t('aiChat.badge', 'Asisten AI')}
           </span>
           <h2 style={{
             fontSize: 'clamp(1.4rem,3vw,2rem)', fontWeight: 800, color: '#fff',
             lineHeight: 1.2, marginBottom: '0.5rem', fontFamily: "'Manrope', sans-serif",
           }}>
-            Ask -{' '}
-            <span style={{ color: '#38bdf8' }}>My AI</span>
+            {t('aiChat.titlePrefix', 'Tanya - ')}
+            <span style={{ color: '#38bdf8' }}>{t('aiChat.titleHighlight', 'AI Saya')}</span>
           </h2>
           
         </div>
@@ -271,7 +273,7 @@ export default function AIChat() {
                   ))}
                 </div>
                 <span style={{ fontSize: '0.7rem', color: 'rgba(56,189,248,0.7)', fontFamily: "'Quicksand',sans-serif" }}>
-                  AI sedang berpikir…
+                  {lang === 'en' ? 'AI is thinking…' : 'AI sedang berpikir…'}
                 </span>
               </div>
             )}
@@ -280,7 +282,7 @@ export default function AIChat() {
           {/* Hint chips */}
           {messages.length <= 1 && !loading && (
             <div style={{ padding: '0 1.25rem 0.75rem', display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
-              {HINTS.map(h => (
+              {(t('aiChat.hints') || []).map(h => (
                 <button key={h} className="aichat-hint" onClick={() => handleAskAI(null, h)} style={{
                   fontSize: '0.67rem', fontWeight: 600, fontFamily: "'Quicksand',sans-serif",
                   color: 'rgba(148,163,184,0.85)', background: 'rgba(30,41,59,0.8)',
@@ -301,7 +303,7 @@ export default function AIChat() {
             <input
               type="text"
               className="aichat-input"
-              placeholder="Tanyakan pengalaman, proyek, atau keahlian Sholihun..."
+              placeholder={t('aiChat.placeholder', 'Tanyakan pengalaman, proyek, atau keahlian Sholihun...')}
               value={query}
               onChange={e => setQuery(e.target.value)}
               disabled={loading}
@@ -327,8 +329,8 @@ export default function AIChat() {
               }}
             >
               {loading
-                ? <><i className="ri-loader-4-line" style={{ display: 'inline-block', animation: 'aichat-spin 1s linear infinite' }} /> Mengirim…</>
-                : <><i className="ri-send-plane-fill" /> Kirim</>
+                ? <><i className="ri-loader-4-line" style={{ display: 'inline-block', animation: 'aichat-spin 1s linear infinite' }} /> {t('aiChat.sendingBtn', 'Mengirim…')}</>
+                : <><i className="ri-send-plane-fill" /> {t('aiChat.sendBtn', 'Kirim')}</>
               }
             </button>
           </form>
@@ -337,7 +339,7 @@ export default function AIChat() {
         {/* Footer note */}
         <p style={{ textAlign: 'center', marginTop: '0.85rem', fontSize: '0.62rem', color: 'rgba(100,116,139,0.7)', fontFamily: "'Quicksand',sans-serif" }}>
           <i className="ri-lock-line" style={{ marginRight: 3 }} />
-          Percakapan tidak disimpan
+          {t('aiChat.footerNote', 'Percakapan tidak disimpan')}
         </p>
       </div>
     </section>

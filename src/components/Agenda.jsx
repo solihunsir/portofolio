@@ -1,5 +1,8 @@
 import { useState, useEffect, useRef } from "react";
-import { listAgenda } from "../data";
+import { useApi } from "../hooks/useApi";
+import { resolveAssetUrl } from "../config/api";
+import { listAgenda as fallbackAgenda } from "../data";
+import { useLanguage } from "../context/LanguageContext";
 
 // Komponen overlay mandiri - render ke luar semua container
 function Overlay({ src, alt, onClose }) {
@@ -71,6 +74,21 @@ function Overlay({ src, alt, onClose }) {
 }
 
 export default function Agenda() {
+  const { t, translateAgenda } = useLanguage();
+  const { data: apiAgenda } = useApi("/api/agenda", fallbackAgenda);
+
+  const rawList = (apiAgenda && apiAgenda.length > 0) ? apiAgenda : fallbackAgenda;
+  const listAgenda = rawList.map((a) => {
+    const item = {
+      id: a.id,
+      nama: a.title || a.nama,
+      desk: a.description || a.desk,
+      gambar: resolveAssetUrl(a.imageUrl || a.gambar),
+      dad: a.animDelay || a.dad || "200",
+    };
+    return translateAgenda(item);
+  });
+
   const [active,   setActive]   = useState(null);
   const [atStart,  setAtStart]  = useState(true);   // scroll posisi paling kiri
   const [atEnd,    setAtEnd]    = useState(false);   // scroll posisi paling kanan
@@ -86,7 +104,7 @@ export default function Agenda() {
   const dirRef     = useRef(1);
 
   /* ── Total kolom dengan layout 2 baris ── */
-  const TOTAL_COLS = Math.ceil(listAgenda.length / 2);
+  const TOTAL_COLS = Math.max(1, Math.ceil(listAgenda.length / 2));
 
   /* ── Hitung batas scroll & update state ── */
   const updateBounds = () => {
@@ -218,13 +236,13 @@ export default function Agenda() {
           {/* ── Section header ── */}
           <div style={{ textAlign: "center", marginBottom: "2.75rem" }}>
             <span className="section-badge">
-              <i className="ri-trophy-line" /> Pencapaian
+              <i className="ri-trophy-line" /> {t("agenda.badge", "Pencapaian & Agenda")}
             </span>
             <h2 className="heading-lg">
-              Agenda &amp; <span className="text-blue">Pencapaian</span>
+              {t("agenda.titlePrefix", "Agenda & ")}<span className="text-blue">{t("agenda.titleHighlight", "Pencapaian")}</span>
             </h2>
             <p className="text-body" style={{ maxWidth: 420, margin: "0.5rem auto 0" }}>
-              Beberapa agenda dan pencapaian selama masa perkuliahan.
+              {t("agenda.subtitle", "Beberapa agenda dan pencapaian selama masa perkuliahan.")}
             </p>
           </div>
 
@@ -236,7 +254,7 @@ export default function Agenda() {
               className={`ac-nav-btn ac-prev${atStart ? " ac-btn-hidden" : ""}`}
               onClick={() => scrollStep(-1)}
               disabled={atStart}
-              aria-label="Sebelumnya"
+              aria-label={t("projects.prev", "Sebelumnya")}
             >
               <i className="ri-arrow-left-s-line" />
             </button>
@@ -246,7 +264,7 @@ export default function Agenda() {
               className={`ac-nav-btn ac-next${atEnd ? " ac-btn-hidden" : ""}`}
               onClick={() => scrollStep(1)}
               disabled={atEnd}
-              aria-label="Berikutnya"
+              aria-label={t("projects.next", "Berikutnya")}
             >
               <i className="ri-arrow-right-s-line" />
             </button>

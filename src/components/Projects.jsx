@@ -1,7 +1,10 @@
 import { useState, useEffect, useRef } from "react";
-import { listProyek } from "../data";
+import { useApi } from "../hooks/useApi";
+import { resolveAssetUrl } from "../config/api";
+import { listProyek as staticProyek } from "../data";
+import { useLanguage } from "../context/LanguageContext";
 
-function Overlay({ src, alt, link, onClose }) {
+function Overlay({ src, alt, link, btnText, onClose }) {
   useEffect(() => {
     const el = document.createElement("div");
     el.id = "proyek-lightbox-root";
@@ -72,7 +75,7 @@ function Overlay({ src, alt, link, onClose }) {
     a.href = link;
     a.target = "_blank";
     a.rel = "noopener noreferrer";
-    a.textContent = "Lihat Repository";
+    a.textContent = btnText || "Lihat Repository";
     Object.assign(a.style, {
       background: "#276EF1",
       color: "#fff",
@@ -104,6 +107,23 @@ function Overlay({ src, alt, link, onClose }) {
 }
 
 export default function Projects() {
+  const { t, translateProject } = useLanguage();
+  const { data: apiProjects } = useApi("/api/projects", staticProyek);
+
+  const rawList = (apiProjects && apiProjects.length > 0) ? apiProjects : staticProyek;
+  const listProyek = rawList.map((p) => {
+    const item = {
+      id: p.id,
+      nama: p.title || p.nama,
+      desk: p.description || p.desk,
+      gambar: resolveAssetUrl(p.thumbnailUrl || p.gambar),
+      tools: Array.isArray(p.techStack) ? p.techStack : (p.tools || []),
+      dad: p.animDelay || p.dad || "200",
+      link: p.githubUrl || p.link || "#",
+    };
+    return translateProject(item);
+  });
+
   const [active, setActive] = useState(null);
   const [atStart, setAtStart] = useState(true);
   const [atEnd, setAtEnd] = useState(false);
@@ -151,7 +171,7 @@ export default function Projects() {
     const tid = setTimeout(measureCol, 150);
     window.addEventListener("resize", measureCol);
     return () => { clearTimeout(tid); window.removeEventListener("resize", measureCol); };
-  }, []);
+  }, [listProyek]);
 
   const stopAuto = () => {
     clearInterval(autoRef.current);
@@ -204,8 +224,7 @@ export default function Projects() {
       stopAuto();
       clearTimeout(idleRef.current);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [listProyek]);
 
   const onEnter = () => {
     hoveredRef.current = true;
@@ -237,6 +256,7 @@ export default function Projects() {
           src={active.src}
           alt={active.alt}
           link={active.link}
+          btnText={t("projects.viewRepo", "Lihat Repository")}
           onClose={() => setActive(null)}
         />
       )}
@@ -245,13 +265,13 @@ export default function Projects() {
         <div className="container">
           <div style={{ textAlign: "center", marginBottom: "2.75rem" }}>
             <span className="section-badge">
-              <i className="ri-code-box-line"></i> Portfolio
+              <i className="ri-code-box-line"></i> {t("projects.badge", "Portofolio")}
             </span>
             <h2 className="heading-lg">
-              Proyek 
+              {t("projects.title", "Proyek Pilihan")} 
             </h2>
             <p className="text-body" style={{ maxWidth: 380, margin: "0.5rem auto 0" }}>
-              Berikut beberapa proyek yang telah saya kerjakan.{" "}
+              {t("projects.subtitle", "Berikut beberapa proyek yang telah saya kerjakan.")}{" "}
             </p>
           </div>
 
@@ -262,7 +282,7 @@ export default function Projects() {
                   className={`prj-nav-btn prj-prev${atStart ? " prj-btn-hidden" : ""}`}
                   onClick={() => scrollStep(-1)}
                   disabled={atStart}
-                  aria-label="Sebelumnya"
+                  aria-label={t("projects.prev", "Sebelumnya")}
                 >
                   <i className="ri-arrow-left-s-line" />
                 </button>
@@ -271,7 +291,7 @@ export default function Projects() {
                   className={`prj-nav-btn prj-next${atEnd ? " prj-btn-hidden" : ""}`}
                   onClick={() => scrollStep(1)}
                   disabled={atEnd}
-                  aria-label="Berikutnya"
+                  aria-label={t("projects.next", "Berikutnya")}
                 >
                   <i className="ri-arrow-right-s-line" />
                 </button>
@@ -323,7 +343,7 @@ export default function Projects() {
                       className="btn btn-outline"
                       style={{ width: "100%", justifyContent: "center", fontSize: "0.8rem", marginTop: "auto" }}
                     >
-                      <i className="ri-github-line"></i> Lihat Repository
+                      <i className="ri-github-line"></i> {t("projects.viewRepo", "Lihat Repository")}
                     </a>
                   </div>
                 </div>
